@@ -2,7 +2,7 @@ export default {
     // 线上地址 http://car_admin.5laoye.com/ 账号和密码都是admin
     // 如师傅
     // baseUrl:'http://192.168.50.96:8001',
-    baseUrl: 'https://dev.cars.hxqhhhh.shop/',
+    baseUrl: 'https://carapi.luguangcar.com/',
     login: '/admin/login', //登录
     users: '/admin/users', //用户列表
     items:'/admin/items',//商品列表
@@ -55,6 +55,7 @@ export default {
     goodsOrder: '/admin/goods-order', //商品订单列表
     manage_update:'/admin/manage_update',//修改账号
     manage_del:'/admin/manage_del',//删除账号
+    item_oelist:'/admin/item_oelist',//商品所属oe码列表
     // 模板
     productList: '/admin/product/list', //商品列表
     loginInfo: '/admin/login/info',

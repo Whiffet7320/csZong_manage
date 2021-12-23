@@ -47,7 +47,9 @@ export default new Vuex.Store({
     ShopdingdanliebiaoPageSize: 10,
     ZhanghaobiaoPage: 1, //账号管理列表
     ZhanghaobiaoPageSize: 10,
-    tabIndex:'1',
+    oemaPage: 1, //OE码列表
+    oemaPageSize: 10,
+    tabIndex:'0',
     tabShopIndex:'1',
     // 
     userInfo: null,
@@ -105,6 +107,12 @@ export default new Vuex.Store({
     },
     wenzhangObj(state, str) {
       state.wenzhangObj = str;
+    },
+    oemaPage(state, str) {
+      state.oemaPage = str;
+    },
+    oemaPageSize(state, str) {
+      state.oemaPageSize = str;
     },
     zijinmingxiliebiaoPage(state, str) {
       state.zijinmingxiliebiaoPage = str;

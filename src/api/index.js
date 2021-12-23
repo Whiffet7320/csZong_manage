@@ -393,6 +393,14 @@ export default {
             }
         })
     },
+    item_oelist(obj) {
+        return myGet({
+            url: urls.item_oelist,
+            params: {
+                ...obj
+            }
+        })
+    },
     upDateItems(obj, id) {
         return myPut({
             url: `${urls.items}/${id}`,

@@ -10,7 +10,7 @@
           <el-tab-pane label="商品信息" name="1"></el-tab-pane>
           <el-tab-pane label="商品详情" name="2"></el-tab-pane>
           <!-- <el-tab-pane label="其他设置" name="3"></el-tab-pane> -->
-          <el-tab-pane label="适配车型" name="4"></el-tab-pane>
+          <el-tab-pane v-if="!shopObj && tabIndex==0" label="适配车型" name="4"></el-tab-pane>
         </el-tabs>
         <!-- 商品信息 -->
         <template v-if="activeName == '1'">
@@ -22,7 +22,7 @@
               label-width="120px"
               class="demo-ruleForm"
             >
-              <el-row v-if="!shopObj">
+              <el-row v-if="!shopObj && tabIndex==0">
                 <el-col :span="12">
                   <el-form-item label="零件编码(oe)：" prop="oe">
                     <div style="display:flex;align-items: center;">
@@ -60,6 +60,13 @@
                 <el-col :span="12">
                   <el-form-item label="商品价格：" prop="price">
                     <el-input size="small" v-model="ruleForm.price"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="12">
+                  <el-form-item label="积分：" prop="name">
+                    <el-input size="small" v-model="ruleForm.score"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>

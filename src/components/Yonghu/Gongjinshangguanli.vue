@@ -72,8 +72,8 @@
         ></el-pagination>
       </div>
     </div>
-    <!-- 查看明细 -->
-    <el-dialog title="查看明细" :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
+    <!-- oe码列表 -->
+    <el-dialog title="oe码列表" :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
       <div class="myForm">
         <div class="tit1">
           <el-button @click="toAddoe" size="small" type="primary" icon="el-icon-plus">添加供应商所属oe码</el-button>

@@ -2,12 +2,12 @@
   <div class="index">
     <div class="nav1">
       <div class="tit1">商品管理</div>
-      <!-- <div class="tit2">
+      <div class="tit2">
         <el-tabs v-model="activeName" @tab-click="tabsHandleClick">
-          <el-tab-pane label="如商城商品" name="1"></el-tab-pane>
-          <el-tab-pane label="服务商品" name="2"></el-tab-pane>
+          <el-tab-pane label="配件商品" name="0"></el-tab-pane>
+          <el-tab-pane label="其它商品" name="1"></el-tab-pane>
         </el-tabs>
-      </div>-->
+      </div>
     </div>
     <div class="nav2">
       <div class="myForm">
@@ -15,7 +15,7 @@
           <el-form-item label="商品分类：">
             <!-- <el-select size="small" v-model="formInline.category_id" placeholder="请选择">
               <el-option v-for="item in options" :key="item.id" :label="item.name" :value="item.id"></el-option>
-            </el-select> -->
+            </el-select>-->
             <el-cascader size="small" v-model="formInline.category_id" :options="options" clearable></el-cascader>
           </el-form-item>
           <el-form-item label="商品搜索：">
@@ -31,7 +31,7 @@
         <el-button @click="toAddShop" size="small" type="primary" icon="el-icon-plus">添加商品</el-button>
       </div>
       <div class="myTable">
-        <vxe-table height='700' :loading="loading" :data="tableData">
+        <vxe-table height="700" :loading="loading" :data="tableData">
           <vxe-table-column type="expand" width="30" :fixed="null">
             <template #content="{ row }">
               <template>
@@ -87,6 +87,7 @@
           </vxe-table-column>
           <vxe-table-column field="name" title="商品名称"></vxe-table-column>
           <vxe-table-column field="price" title="商品售价"></vxe-table-column>
+          <vxe-table-column field="score" title="积分"></vxe-table-column>
           <vxe-table-column field="weight" title="重量"></vxe-table-column>
           <vxe-table-column field="stock" title="库存"></vxe-table-column>
           <vxe-table-column field="sort" title="排序"></vxe-table-column>
@@ -95,12 +96,13 @@
               <el-switch @change="changeKG(scope.row)" v-model="scope.row.myStatus"></el-switch>
             </template>
           </vxe-table-column>
-          <vxe-table-column title="操作状态" width="140">
+          <vxe-table-column title="操作状态" width="180">
             <template slot-scope="scope">
               <div class="flex">
                 <el-button size="small" @click="toEditShop(scope.row)" type="text">编辑</el-button>
                 <!-- <el-button size="small" @click="toEditShop(scope.row)" type="text">查看评论</el-button> -->
                 <el-button size="small" @click="toDelShop(scope.row)" type="text">删除</el-button>
+                <el-button size="small" @click="toSeeOe(scope.row)" type="text">查看oe码列表</el-button>
               </div>
             </template>
           </vxe-table-column>
@@ -117,6 +119,33 @@
         ></el-pagination>
       </div>
     </div>
+    <!-- oe码列表 -->
+    <el-dialog title="oe码列表" :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
+      <div class="myTable">
+        <vxe-table :data="oeTableData">
+          <vxe-table-column field="id" width="120" title="ID"></vxe-table-column>
+          <vxe-table-column field="name" title="oe码"></vxe-table-column>
+          <!-- <vxe-table-column title="操作状态" width="120">
+            <template slot-scope="scope">
+              <div class="flex">
+                <el-button size="small" type="text" @click="taboeEdit(scope.row)">编辑</el-button>
+                <el-button size="small" type="text" @click="deloeEdit(scope.row)">删除</el-button>
+              </div>
+            </template>
+          </vxe-table-column> -->
+        </vxe-table>
+        <el-pagination
+          class="fenye"
+          @size-change="this.zijinmingxiHandleSizeChange"
+          @current-change="this.zijinmingxiHandleCurrentChange"
+          :current-page="this.oemaPage"
+          :page-size="10"
+          :page-sizes="[10, 15, 20, 30]"
+          layout="total,sizes, prev, pager, next, jumper"
+          :total="this.mingxiTotal"
+        ></el-pagination>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -127,7 +156,9 @@ export default {
     ...mapState([
       "shangpingliebiaoPage",
       "shangpingliebiaoPageSize",
-      "tabIndex"
+      "tabIndex",
+       "oemaPage",
+      "oemaPageSize"
     ])
   },
   watch: {
@@ -143,12 +174,24 @@ export default {
       this.activeName = this.tabIndex;
       console.log(this.activeName);
       this.getData();
+    },
+    oemaPage: function(page) {
+      this.$store.commit("oemaPage", page);
+      this.getData();
+    },
+    oemaPageSize: function(pageSize) {
+      this.$store.commit("oemaPageSize", pageSize);
+      this.getData();
     }
   },
   data() {
     return {
-      loading:false,
-      activeName: "1",
+      id:'',
+      oeTableData:[],
+      mingxiTotal:0,
+      dialogVisible:false,
+      loading: false,
+      activeName: "0",
       formInline: {
         category_id: "",
         name: ""
@@ -183,7 +226,8 @@ export default {
         limit: this.shangpingliebiaoPageSize,
         page: this.shangpingliebiaoPage,
         cate_id: this.formInline.category_id[1],
-        keyword: this.formInline.name
+        keyword: this.formInline.name,
+        types: this.activeName
       });
       console.log(res);
       this.total = res.data.total;
@@ -211,6 +255,17 @@ export default {
         ele.myCategory = `${bb[0].name}/${ele.myCategory}`;
       });
       this.loading = false;
+    },
+    handleClose() {
+      this.dialogVisible = false;
+    },
+    zijinmingxiHandleSizeChange(val) {
+      console.log(`每页 ${val} 条`);
+      this.$store.commit("oemaPageSize", val);
+    },
+    zijinmingxiHandleCurrentChange(val) {
+      console.log(`当前页: ${val}`);
+      this.$store.commit("oemaPage", val);
     },
     // 开关（上架/下架）
     async changeKG(row) {
@@ -245,9 +300,28 @@ export default {
         this.getData();
       }
     },
+    async getoeData() {
+      const res = await this.$api.item_oelist(
+        {
+          page: this.oemaPage,
+          limit: this.oemaPageSize,
+          item_id:this.id
+        },
+      );
+      console.log(res);
+      this.oeTableData = res.data.data;
+      this.oeTotal = res.data.total;
+    },
+    toSeeOe(row) {
+      console.log(row);
+      this.id = row.id;
+      this.$store.commit("oemaPage", 1);
+      this.getoeData();
+      this.dialogVisible = true;
+    },
     tabsHandleClick(tab) {
       console.log(tab.index);
-      this.$store.commit("tabIndex", (Number(tab.index) + 1).toString());
+      this.$store.commit("tabIndex", Number(tab.index).toString());
       this.formInline.category_id = "";
       this.formInline.name = "";
     },
