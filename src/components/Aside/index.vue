@@ -23,12 +23,17 @@
           <i class="el-icon-s-home"></i>
           <span slot="title">首页</span>
         </el-menu-item>
-        <el-submenu v-for="item in menu" :key='item.id' :index="item.menu_index">
+        <el-submenu v-for="item in menu" :key="item.id" :index="item.menu_index">
           <template slot="title">
             <i :class="item.icon"></i>
             <span>{{item.name}}</span>
           </template>
-          <el-menu-item v-for="item2 in item.sub_menu" :key='item2.id' :route="{ name: item2.url }" :index="item2.menu_index">{{item2.name}}</el-menu-item>
+          <el-menu-item
+            v-for="item2 in item.sub_menu"
+            :key="item2.id"
+            :route="{ name: item2.url }"
+            :index="item2.menu_index"
+          >{{item2.name}}</el-menu-item>
         </el-submenu>
         <!-- 不显示 -->
         <template v-if="false">
@@ -40,6 +45,7 @@
             <el-menu-item :route="{ name: 'Shangpinguanli' }" index="2-1">商品管理</el-menu-item>
             <el-menu-item :route="{ name: 'Jifenshangpinguanli' }" index="2-5">积分商品管理</el-menu-item>
             <el-menu-item :route="{ name: 'Shangpingfenlei' }" index="2-2">商品分类</el-menu-item>
+            <el-menu-item :route="{ name: 'Pingpailiebiao' }" index="2-10">品牌管理</el-menu-item>
             <!-- <el-menu-item :route="{ name: 'Shangpingpinglun' }" index="2-3"
             >商品评论</el-menu-item
             >-->
@@ -121,11 +127,12 @@
             </template>
             <!-- <el-menu-item :route="{ name: 'Xiaoxiguanli' }" index="8-1">消息管理</el-menu-item> -->
             <el-menu-item :route="{ name: 'Qitashezhi' }" index="8-2">其他设置</el-menu-item>
+            <el-menu-item :route="{ name: 'Tongzhiguanli' }" index="8-12">通知管理</el-menu-item>
             <el-menu-item :route="{ name: 'Lunbotushezhi' }" index="8-3">积分规则</el-menu-item>
             <el-menu-item :route="{ name: 'Fapiaoguize' }" index="8-9">发票规则</el-menu-item>
             <el-menu-item :route="{ name: 'Guanjianci' }" index="8-10">关键词设置</el-menu-item>
             <el-menu-item :route="{ name: 'Zhanghaoguanli' }" index="8-11">账号管理</el-menu-item>
-            <!-- <el-menu-item :route="{ name: 'Lunbotuliebiao' }" index="8-4">轮播图列表</el-menu-item> -->
+            <el-menu-item :route="{ name: 'Lunbotuliebiao' }" index="8-4">轮播图列表</el-menu-item>
             <!-- <el-menu-item :route="{ name: 'Kaipinyeshezhi' }" index="8-5">开屏页设置</el-menu-item> -->
             <!-- <el-menu-item :route="{ name: 'Shujuzhongxin' }" index="8-6">数据中心</el-menu-item> -->
           </el-submenu>
@@ -164,14 +171,14 @@ export default {
   },
   created() {
     this.menu = JSON.parse(decodeURIComponent(sessionStorage.getItem("menu")));
-    console.log(this.menu)
+    console.log(this.menu);
   },
   watch: {
     $route(to) {
-      console.log(to.path,sessionStorage.getItem('toShouye')); //到哪去
-      if(sessionStorage.getItem('toShouye') == 'yes'){
+      console.log(to.path, sessionStorage.getItem("toShouye")); //到哪去
+      if (sessionStorage.getItem("toShouye") == "yes") {
         this.$router.push({ path: "/Shouye" });
-        sessionStorage.setItem('toShouye','no')
+        sessionStorage.setItem("toShouye", "no");
       }
       if (to.path == "/Shouye") {
         this.menuActiveIndex = "1-1";
@@ -222,6 +229,13 @@ export default {
           "headerTit",
           `商品 / <span style="color: #515a61;
         font-weight: 700;">积分商品分类</span>`
+        );
+      }  else if (to.path == "/Shangpin/Pingpailiebiao") {
+        this.menuActiveIndex = "2-10";
+        this.$store.commit(
+          "headerTit",
+          `商品 / <span style="color: #515a61;
+        font-weight: 700;">品牌管理</span>`
         );
       } else if (to.path == "/Dingdan/Dingdanguanli") {
         this.menuActiveIndex = "3-1";
@@ -383,6 +397,13 @@ export default {
           "headerTit",
           `设置 / <span style="color: #515a61;
         font-weight: 700;">账号管理</span>`
+        );
+      } else if (to.path == "/Shezhi/Tongzhiguanli") {
+        this.menuActiveIndex = "8-12";
+        this.$store.commit(
+          "headerTit",
+          `设置 / <span style="color: #515a61;
+        font-weight: 700;">通知管理</span>`
         );
       } else if (to.path == "/Shezhi/Lunbotuliebiao") {
         this.menuActiveIndex = "8-4";

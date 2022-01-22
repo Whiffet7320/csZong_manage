@@ -24,7 +24,7 @@
           <el-row>
             <el-col :span="20">
               <el-form-item label="订单状态：">
-                <el-radio-group v-model="form.rad1" size="small" @change='changRad1'>
+                <el-radio-group v-model="form.rad1" size="small" @change="changRad1">
                   <el-radio-button label="-2">全部</el-radio-button>
                   <el-radio-button label="0">未支付</el-radio-button>
                   <el-radio-button label="1">待发货</el-radio-button>
@@ -47,7 +47,7 @@
                 </el-radio-group>
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row>-->
           <el-row>
             <el-col :span="20">
               <el-form-item label="创建时间：">
@@ -58,15 +58,15 @@
                   range-separator="至"
                   start-placeholder="开始日期"
                   end-placeholder="结束日期"
-                >
-                </el-date-picker>
+                  value-format="yyyy-MM-dd"
+                ></el-date-picker>
               </el-form-item>
             </el-col>
-          </el-row> -->
+          </el-row>
           <el-row>
-            <el-col :span="8">
+            <el-col :span="10">
               <el-form-item label="搜索：">
-                <div class="search">
+                <div class="search" style="display:flex">
                   <el-input
                     size="small"
                     placeholder="请输入内容"
@@ -85,13 +85,17 @@
                       <el-option label="用户名称" value="4"></el-option>
                       <el-option label="用户电话" value="5"></el-option>
                       <el-option label="商品名称" value="6"></el-option>
-                    </el-select> -->
-                    <el-button
-                      @click="onSubmit"
-                      slot="append"
-                      icon="el-icon-search"
-                    ></el-button>
+                    </el-select>-->
+                    <el-button @click="onSubmit" slot="append" icon="el-icon-search"></el-button>
                   </el-input>
+                  <el-button style="margin-left:10px" size="small" type="primary" @click="daochu">导出</el-button>
+                  <el-button
+                    style="margin-left:10px"
+                    plain
+                    size="small"
+                    type="primary"
+                    @click="daoru"
+                  >导入</el-button>
                 </div>
               </el-form-item>
             </el-col>
@@ -117,7 +121,7 @@
                       <div
                         class="item"
                       >师傅电话：{{ row.selected_quote?row.selected_quote.user.phone:'无' }}</div>
-                    </el-col> -->
+                    </el-col>-->
                   </el-row>
                   <!-- <el-row :gutter="20">
                     <el-col :span="6">
@@ -141,7 +145,7 @@
                     <el-col :span="6">
                       <div class="item">虚拟销量：3C数码/手机</div>
                     </el-col>
-                  </el-row> -->
+                  </el-row>-->
                 </div>
               </template>
             </template>
@@ -149,15 +153,13 @@
           <vxe-table-column field="order_num" min-width="180" title="订单号"></vxe-table-column>
           <vxe-table-column min-width="80" field="myStatus" title="订单状态"></vxe-table-column>
           <vxe-table-column min-width="80" field="address.name" title="用户信息"></vxe-table-column>
-          <!-- <vxe-table-column min-width="120" field="myAble_delivery" title="是否要求发货"></vxe-table-column> -->          <vxe-table-column
-            min-width="180"
-            title="商品信息"
-          >
+          <!-- <vxe-table-column min-width="120" field="myAble_delivery" title="是否要求发货"></vxe-table-column> -->
+          <vxe-table-column min-width="300" title="商品信息">
             <template slot-scope="scope">
               <div class="shopxx" v-for="ele2 in scope.row.order_items" :key="ele2.id">
                 <img class="shopImg" :src="ele2.image" alt />
                 <div class="txt">
-                  {{ ele2.name }}（数量:{{ele2.count}}件{{ele2.sku != '' ? ` 规格:${ele2.sku}` : ''}}） 
+                  {{ ele2.name }}（数量:{{ele2.count}}件{{ele2.sku != '' ? ` 规格:${ele2.sku}` : ''}},下单所得积分:{{ele2.integral}},车型ID:{{ele2.vehicle_id?ele2.vehicle_id:'暂无'}},车型名称:{{ele2.vehicle_name?ele2.vehicle_name:'暂无'}}）
                   <!-- {{ scope.row.info.product_detail.attr_info.suk }} -->
                 </div>
               </div>
@@ -170,7 +172,7 @@
             <template slot-scope="scope">
               <div class="flex">
                 <el-button
-                  :disabled='scope.row.status != 1'
+                  :disabled="scope.row.status != 1"
                   size="small"
                   @click="fahuo(scope.row)"
                   type="text"
@@ -213,17 +215,69 @@
           </el-form-item>
           <!-- <el-form-item label="快递名称" prop="delivery_name">
             <el-input size="small" v-model="fahuoForm.delivery_name"></el-input>
-          </el-form-item> -->
+          </el-form-item>-->
           <el-form-item>
             <el-button size="small" type="primary" @click="submitForm('fahuoForm')">发货</el-button>
           </el-form-item>
         </el-form>
       </div>
     </el-dialog>
+    <!-- 导出 -->
+    <el-dialog
+      title="导出"
+      :visible.sync="daochuDialogVisible"
+      width="30%"
+      :before-close="daochuHandleClose"
+    >
+      <div class="fahuomyForm">
+        <el-form
+          :model="daochuForm"
+          :rules="daochuRules"
+          ref="daochuForm"
+          label-width="100px"
+          class="demo-ruleForm"
+        >
+          <el-form-item label="导出备注" prop="daochuVal">
+            <el-input size="small" type="textarea" :rows="2" v-model="daochuForm.daochuVal"></el-input>
+          </el-form-item>
+          <!-- <el-form-item label="快递名称" prop="delivery_name">
+            <el-input size="small" v-model="fahuoForm.delivery_name"></el-input>
+          </el-form-item>-->
+          <el-form-item>
+            <el-button size="small" type="primary" @click="submitdaochuForm('daochuForm')">导出</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+    </el-dialog>
+    <!-- 导入 -->
+    <el-dialog
+      title="导入"
+      :visible.sync="daoruDialogVisible"
+      width="400px"
+      :before-close="daoruHandleClose"
+    >
+      <div class="box1">
+        <el-upload
+          class="upload-demo"
+          drag
+          action="/"
+          :file-list="fileList"
+          multiple
+          :http-request="newupLoadSuccess"
+        >
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">
+            将文件拖到此处，或
+            <em>点击上传</em>
+          </div>
+        </el-upload>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import { mapState } from "vuex";
 export default {
   computed: {
@@ -241,7 +295,17 @@ export default {
   },
   data() {
     return {
-      loading:false,
+      fileList: [],
+      myformData2: null,
+      daoruDialogVisible: false,
+      daochuForm: {
+        daochuVal: ""
+      },
+      daochuRules: {
+        daochuVal: [{ required: true, message: "请输入备注", trigger: "blur" }]
+      },
+      daochuDialogVisible: false,
+      loading: false,
       activeName: "3",
       form: {
         rad1: "-2",
@@ -277,13 +341,15 @@ export default {
       const res = await this.$api.orders({
         page: this.dingdanliebiaoPage,
         limit: this.dingdanliebiaoPageSize,
-        keyword:this.form.search,
-        status:this.form.rad1
+        keyword: this.form.search,
+        status: this.form.rad1,
+        start_day: this.form.time[0],
+        end_day: this.form.time[1]
       });
       console.log(res.data);
       this.total = res.data.total;
       this.tableData = res.data.data;
-      console.log(this.tableData)
+      console.log(this.tableData);
       this.tableData.forEach(ele => {
         ele.myStatus =
           ele.status == -2
@@ -300,20 +366,97 @@ export default {
       });
       this.loading = false;
     },
-    changRad1(e){
-      console.log(e)
-      this.getData()
+    // 上传文件
+    newupLoadSuccess(params) {
+      console.log(params.file);
+      this.myformData2 = new FormData();
+      this.myformData2.append("import", params.file);
+      this.myformData2.append("token", sessionStorage.getItem("token"));
+      var configs = {
+        headers: {
+          "Content-Type": "multipart/form-data;charse=UTF-8"
+        }
+      };
+      axios
+        .post(
+          "https://carapi.luguangcar.com/admin/orders/import",
+          this.myformData2,
+          configs
+        )
+        .then(res => {
+          console.log(res);
+          if (res) {
+            this.$alert(
+              `导入成功：${res.data.success_num}条，数据重复：${res.data.repeat_num}条，导入失败：${res.data.fail_num}条`,
+              "导入结果",
+              {
+                confirmButtonText: "确定",
+                callback: () => {
+                  this.daoruDialogVisible = false;
+                  this.fileList = [];
+                  this.getData();
+                }
+              }
+            );
+          }
+        })
+        .catch(err => {
+          this.$message({
+            message: err.response.data.message,
+            type: "warning"
+          });
+        });
+    },
+    daochuHandleClose() {
+      this.daochuDialogVisible = false;
+    },
+    changRad1(e) {
+      console.log(e);
+      this.getData();
+    },
+    daochu() {
+      this.daochuDialogVisible = true;
+    },
+    daoru() {
+      this.daoruDialogVisible = true;
+    },
+    daoruHandleClose() {
+      this.daoruDialogVisible = false;
+    },
+    async submitdaochuForm(formName) {
+      this.$refs[formName].validate(async valid => {
+        if (valid) {
+          const res = await this.$api.ordersExport({
+            status: this.form.rad1,
+            start_day: this.form.time[0],
+            end_day: this.form.time[1],
+            keyword: this.form.search,
+            remarks: this.daochuForm.daochuVal
+          });
+          console.log(res);
+          if (res.data.status == 0) {
+            this.daochuDialogVisible = false;
+            window.open(res.data.excel_url);
+          }
+        } else {
+          console.log("error submit!!");
+          return false;
+        }
+      });
     },
     async submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
-          const res = await this.$api.ordersFahuo({
-            delivery_num: this.fahuoForm.delivery_code,
-          },this.fahuoId);
+          const res = await this.$api.ordersFahuo(
+            {
+              delivery_num: this.fahuoForm.delivery_code
+            },
+            this.fahuoId
+          );
           console.log(res);
           if (res) {
             this.$message({
-              message: '发货成功',
+              message: "发货成功",
               type: "success"
             });
             this.getData();
@@ -329,25 +472,28 @@ export default {
     },
     onSubmit() {
       console.log(this.form);
-      this.getData()
+      this.getData();
     },
     fahuo(row) {
       console.log(row);
       this.fahuoId = row.id;
       this.fahuoDialogVisible = true;
     },
-    async seeFapiao(row){
-      const res = await this.$api.orderBillXiangqin(row.id)
-      console.log(res)
+    async seeFapiao(row) {
+      const res = await this.$api.orderBillXiangqin(row.id);
+      console.log(res);
     },
     async shouhou(row) {
-      const res = await this.$api.ordersId({
-        status:5
-      },row.order.id);
-      console.log(res)
+      const res = await this.$api.ordersId(
+        {
+          status: 5
+        },
+        row.order.id
+      );
+      console.log(res);
       if (res.code == 200) {
         this.$message({
-          message: '修改成功',
+          message: "修改成功",
           type: "success"
         });
         this.getData();

@@ -46,6 +46,10 @@ const routes = [{
         path: 'Jifenshangpinguanli',
         name: 'Jifenshangpinguanli',
         component: () => import('./components/Shangpin/Jifenshangpinguanli'),
+    }, {
+        path: 'Pingpailiebiao',
+        name: 'Pingpailiebiao',
+        component: () => import('./components/Shangpin/Pingpailiebiao'),
     }, ]
 }, {
     path: '/Dingdan',
@@ -110,11 +114,11 @@ const routes = [{
         path: 'Yonghuguanli',
         name: 'Yonghuguanli',
         component: () => import('./components/Yonghu/Yonghuguanli'),
-    },{
+    }, {
         path: 'Gongjinshangguanli',
         name: 'Gongjinshangguanli',
         component: () => import('./components/Yonghu/Gongjinshangguanli'),
-    },{
+    }, {
         path: 'Shenheliebiao',
         name: 'Shenheliebiao',
         component: () => import('./components/Yonghu/Shenheliebiao'),
@@ -190,11 +194,11 @@ const routes = [{
         path: 'Xiaoxiguanli',
         name: 'Xiaoxiguanli',
         component: () => import('./components/Shezhi/Xiaoxiguanli'),
-    },{
+    }, {
         path: 'Zhanghaoguanli',
         name: 'Zhanghaoguanli',
         component: () => import('./components/Shezhi/Zhanghaoguanli'),
-    },{
+    }, {
         path: 'Guanjianci',
         name: 'Guanjianci',
         component: () => import('./components/Shezhi/Guanjianci'),
@@ -222,6 +226,10 @@ const routes = [{
         path: 'Fapiaoguize',
         name: 'Fapiaoguize',
         component: () => import('./components/Shezhi/Fapiaoguize'),
+    }, {
+        path: 'Tongzhiguanli',
+        name: 'Tongzhiguanli',
+        component: () => import('./components/Shezhi/Tongzhiguanli'),
     }]
 }, {
     path: '/Kefu',

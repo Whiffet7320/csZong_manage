@@ -13,7 +13,7 @@
           <vxe-table-column field="name" title="奖品名称"></vxe-table-column>
           <vxe-table-column field="image" title="奖品图">
             <template slot-scope="scope">
-              <el-image :src="scope.row.image" fit="fill" style="width: 40px; height: 40px">
+              <el-image :src="scope.row.image" :preview-src-list="[scope.row.image]" fit="fill" style="width: 40px; height: 40px">
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
                 </div>

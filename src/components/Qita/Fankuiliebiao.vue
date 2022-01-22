@@ -28,6 +28,7 @@
             <template slot-scope="scope">
               <el-image
                 v-for="(item,i) in scope.row.images"
+                :preview-src-list="[scope.row.images]"
                 :key="i"
                 :src="item"
                 fit="fill"

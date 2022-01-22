@@ -46,7 +46,8 @@ Vue.config.productionTip = false;
 //进入页面创建websocket连接
 function initWebSocket() {
   var isDotNumList = [];
-  const socket = io('http://dev.cars.hxqhhhh.shop:1215',{
+  // carapi.luguangcar.com
+  const socket = io('https://socketio.luguangcar.com/',{
     transports: ['websocket']
   });
   socket.on("message", (data) => {

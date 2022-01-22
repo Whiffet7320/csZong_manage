@@ -91,7 +91,7 @@
                       v-for="(item, i) in ruleForm.image_gallery"
                       :key="i"
                     >
-                      <el-image :src="item" fit="fill" style="width: 70px; height: 70px">
+                      <el-image :src="item" :preview-src-list="[item]" fit="fill" style="width: 70px; height: 70px">
                         <div slot="error" class="image-slot">
                           <i class="el-icon-picture-outline"></i>
                         </div>
@@ -334,6 +334,7 @@
                                 border: 1px solid #ddd;
                               "
                               :src="row.pic"
+                              :preview-src-list="[row.pic]"
                             >
                               <div slot="error" class="image-slot">
                                 <i class="el-icon-picture-outline"></i>

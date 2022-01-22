@@ -45,6 +45,13 @@
                 </el-col>
               </el-row>
               <el-row>
+                <el-col v-if="tabIndex==1" :span="12">
+                  <el-form-item label="品牌：" prop="name">
+                    <el-input size="small" v-model="ruleForm.brand_name"></el-input>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
                 <el-col :span="12">
                   <el-form-item label="商品分类：" prop="category_id">
                     <el-cascader
@@ -59,7 +66,7 @@
               <el-row>
                 <el-col :span="12">
                   <el-form-item label="商品价格：" prop="price">
-                    <el-input size="small" v-model="ruleForm.price"></el-input>
+                    <el-input size="small" v-model="ruleForm.price" @input="inpPrice"></el-input>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -92,7 +99,7 @@
               </el-row>-->
               <el-row>
                 <el-col :span="12">
-                  <el-form-item size="small" label="商品简介：" prop="textarea">
+                  <el-form-item size="small" label="商品简介：" prop="desc">
                     <el-input type="textarea" v-model="ruleForm.desc" :rows="4"></el-input>
                   </el-form-item>
                 </el-col>
@@ -364,6 +371,7 @@
                                 border: 1px solid #ddd;
                               "
                               :src="row.pic"
+                              :preview-src-list="[row.pic]"
                             >
                               <div slot="error" class="image-slot">
                                 <i class="el-icon-picture-outline"></i>
@@ -507,6 +515,7 @@ export default {
   },
   data() {
     return {
+      bili:0,
       tableData: [],
       activeNameTab: "",
       content: "",
@@ -520,6 +529,7 @@ export default {
       imgArrNum: 0,
       updateId: "",
       ruleForm: {
+        brand_name:'',
         name: "",
         sub_title: "",
         category_id: "",
@@ -530,7 +540,7 @@ export default {
         status: "",
         type: "",
         sort: "",
-        stock:0,
+        stock: 0
       },
       rules: {
         sort: [{ required: true, message: "请输入排序", trigger: "blur" }],
@@ -559,7 +569,7 @@ export default {
         ],
         postage: [{ required: true, message: "请输入邮费", trigger: "blur" }],
         price: [{ required: true, message: "请输入价格", trigger: "blur" }],
-        textarea: [{ required: true, message: "请输入简介", trigger: "blur" }],
+        desc: [{ required: true, message: "请输入简介", trigger: "blur" }],
         weight: [{ required: true, message: "请输入重量", trigger: "blur" }],
         stock: [{ required: true, message: "请输入库存", trigger: "blur" }],
         oe: [{ required: true, message: "请输入零件编码", trigger: "blur" }]
@@ -599,8 +609,23 @@ export default {
   created() {
     console.log(this.tabIndex);
     this.getData();
+    this.getGlobalConfig()
   },
   methods: {
+    async getGlobalConfig() {
+      const res = await this.$api.globalConfigs({
+        limit: 1000,
+        page: 1
+      });
+      res.data.data.forEach(ele=>{
+        if(ele.key == 'scoreRatio'){
+          this.bili = Number(ele.value);
+        }
+      })
+    },
+    inpPrice(){
+      this.ruleForm.score = (this.ruleForm.price * this.bili).toFixed(2);
+    },
     async getData() {
       this.activeNameTab = this.tabIndex;
       const res = await this.$api.categories({
@@ -652,8 +677,8 @@ export default {
       });
       console.log(res);
       if (res) {
-        this.ruleForm.stock ++;
-        this.ruleForm.name = res.data.partList.oeName;
+        this.ruleForm.stock++;
+        this.ruleForm.name = res.data.partList.stdPartName;
         this.ruleForm.desc = res.data.partList.remark;
         this.tableData = res.data.vehicleList;
       }
@@ -686,6 +711,7 @@ export default {
           ...this.ruleForm,
           parameter: this.skuTableData[0],
           category_id: this.ruleForm.category_id[1],
+          types: this.tabIndex == 0 ? "0" : "1",
           detail_intro: document.getElementsByClassName("w-e-text")[0].innerHTML
         });
         console.log(res);
@@ -1011,7 +1037,8 @@ export default {
           is_new: "0",
           spec_type: "1",
           activity: "0,3",
-          id: this.shopObj.id
+          id: this.shopObj.id,
+          types: this.tabIndex == 0 ? "0" : "1",
         });
         console.log(res);
         if (res) {
@@ -1040,7 +1067,8 @@ export default {
           is_best: "0",
           is_new: "0",
           spec_type: "1",
-          activity: "0,3"
+          activity: "0,3",
+          types: this.tabIndex == 0 ? "0" : "1"
         });
         console.log(res);
         if (res) {

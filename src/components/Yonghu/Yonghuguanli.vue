@@ -63,6 +63,7 @@
                         <el-image
                           v-if="row.user_info"
                           :src="row.user_info.shop_img"
+                          :preview-src-list="[row.user_info.shop_img]"
                           fit="fill"
                           style="width: 80px; height: 80px"
                         >
@@ -107,6 +108,7 @@
               <el-image
                 v-if="scope.row.user_info"
                 :src="scope.row.user_info.avatar"
+                :preview-src-list="[scope.row.user_info.avatar]"
                 fit="fill"
                 style="width: 40px; height: 40px"
               >
@@ -121,6 +123,7 @@
               <el-image
                 v-if="scope.row.user_info"
                 :src="scope.row.user_info.business_license"
+                :preview-src-list="[scope.row.user_info.business_license]"
                 fit="fill"
                 style="width: 40px; height: 40px"
               >
@@ -210,6 +213,7 @@
                 <div @click="companyList('tx')" class="myImg">
                   <el-image
                     :src="addForm.user_info.avatar"
+                    :preview-src-list="[addForm.user_info.avatar]"
                     fit="fill"
                     style="width: 60px; height: 60px"
                   >
@@ -230,6 +234,7 @@
                 <div @click="companyList('yyzz')" class="myImg">
                   <el-image
                     :src="addForm.user_info.business_license"
+                    :preview-src-list="[addForm.user_info.business_license]"
                     fit="fill"
                     style="width: 60px; height: 60px"
                   >
@@ -257,6 +262,7 @@
                 <div @click="companyList('dpt')" class="myImg">
                   <el-image
                     :src="addForm.user_info.shop_img"
+                    :preview-src-list="[addForm.user_info.shop_img]"
                     fit="fill"
                     style="width: 60px; height: 60px"
                   >

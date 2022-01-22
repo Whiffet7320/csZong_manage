@@ -24,6 +24,14 @@
           <el-form-item>
             <el-button size="small" type="primary" @click="onSubmit">查询</el-button>
             <el-button size="small" @click="onReact">重置</el-button>
+            <el-button
+              v-if="activeName == 1"
+              style="margin-left:10px"
+              plain
+              size="small"
+              type="primary"
+              @click="daoru"
+            >导入</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -63,7 +71,7 @@
           <vxe-table-column field="id" title="商品ID"></vxe-table-column>
           <vxe-table-column field="role" title="商品主图">
             <template slot-scope="scope">
-              <el-image :src="scope.row.preview_image" fit="fill" style="width: 40px; height: 40px">
+              <el-image :src="scope.row.preview_image" :preview-src-list="[scope.row.preview_image]" fit="fill" style="width: 40px; height: 40px">
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
                 </div>
@@ -74,6 +82,7 @@
             <template slot-scope="scope">
               <el-image
                 v-for="(item,i) in scope.row.gallery_images"
+                :preview-src-list="[item]"
                 :key="i"
                 :src="item"
                 fit="fill"
@@ -96,12 +105,13 @@
               <el-switch @change="changeKG(scope.row)" v-model="scope.row.myStatus"></el-switch>
             </template>
           </vxe-table-column>
-          <vxe-table-column title="操作状态" width="180">
+          <vxe-table-column title="操作状态" width="220">
             <template slot-scope="scope">
               <div class="flex">
                 <el-button size="small" @click="toEditShop(scope.row)" type="text">编辑</el-button>
                 <!-- <el-button size="small" @click="toEditShop(scope.row)" type="text">查看评论</el-button> -->
                 <el-button size="small" @click="toDelShop(scope.row)" type="text">删除</el-button>
+                <el-button size="small" v-if="activeName == 1" @click="toSeePP(scope.row)" type="text">品牌</el-button>
                 <el-button size="small" @click="toSeeOe(scope.row)" type="text">查看oe码列表</el-button>
               </div>
             </template>
@@ -124,7 +134,9 @@
       <div class="myTable">
         <vxe-table :data="oeTableData">
           <vxe-table-column field="id" width="120" title="ID"></vxe-table-column>
-          <vxe-table-column field="name" title="oe码"></vxe-table-column>
+          <vxe-table-column field="oe" title="oe码"></vxe-table-column>
+          <vxe-table-column field="oeName" title="oe码名称"></vxe-table-column>
+          <vxe-table-column field="stdPartName" title="配件名称"></vxe-table-column>
           <!-- <vxe-table-column title="操作状态" width="120">
             <template slot-scope="scope">
               <div class="flex">
@@ -132,7 +144,7 @@
                 <el-button size="small" type="text" @click="deloeEdit(scope.row)">删除</el-button>
               </div>
             </template>
-          </vxe-table-column> -->
+          </vxe-table-column>-->
         </vxe-table>
         <el-pagination
           class="fenye"
@@ -146,10 +158,88 @@
         ></el-pagination>
       </div>
     </el-dialog>
+    <!-- 品牌列表 -->
+    <el-dialog
+      title="品牌列表"
+      :visible.sync="ppdialogVisible"
+      width="80%"
+      :before-close="pphandleClose"
+    >
+      <div class="myForm">
+        <el-form :inline="true" :model="formInline" class="demo-form-inline">
+          <el-form-item label="添加品牌：">
+            <el-select size="small" v-model="ppformInline.brand_id" filterable placeholder="请选择">
+              <el-option v-for="item in ppOptions" :key="item.b_id" :label="item.brand_name" :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item>
+            <el-button size="small" type="primary" @click="onPPSubmit">添加</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
+      <div class="myTable">
+        <vxe-table :data="ppTableData">
+          <vxe-table-column field="id" width="120" title="ID"></vxe-table-column>
+          <vxe-table-column field="role" title="品牌图标">
+            <template slot-scope="scope">
+              <el-image :src="scope.row.brand_icon" :preview-src-list="[scope.row.brand_icon]" fit="fill" style="width: 40px; height: 40px">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+            </template>
+          </vxe-table-column>
+          <vxe-table-column field="brand_name" title="品牌名称"></vxe-table-column>
+          <vxe-table-column field="clzl" title="类型"></vxe-table-column>
+          <vxe-table-column title="操作状态" width="120">
+            <template slot-scope="scope">
+              <div class="flex">
+                <el-button size="small" type="text" @click="delppEdit(scope.row)">删除</el-button>
+              </div>
+            </template>
+          </vxe-table-column>
+        </vxe-table>
+        <el-pagination
+          class="fenye"
+          @size-change="this.zijinmingxiHandleSizeChange"
+          @current-change="this.zijinmingxiHandleCurrentChange"
+          :current-page="this.oemaPage"
+          :page-size="10"
+          :page-sizes="[10, 15, 20, 30]"
+          layout="total,sizes, prev, pager, next, jumper"
+          :total="this.ppTotal"
+        ></el-pagination>
+      </div>
+    </el-dialog>
+    <!-- 导入 -->
+    <el-dialog
+      title="导入"
+      :visible.sync="daoruDialogVisible"
+      width="400px"
+      :before-close="daoruHandleClose"
+    >
+      <div class="box1">
+        <el-upload
+          class="upload-demo"
+          drag
+          action="/"
+          :file-list="fileList"
+          multiple
+          :http-request="newupLoadSuccess"
+        >
+          <i class="el-icon-upload"></i>
+          <div class="el-upload__text">
+            将文件拖到此处，或
+            <em>点击上传</em>
+          </div>
+        </el-upload>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import { mapState } from "vuex";
 export default {
   computed: {
@@ -157,7 +247,7 @@ export default {
       "shangpingliebiaoPage",
       "shangpingliebiaoPageSize",
       "tabIndex",
-       "oemaPage",
+      "oemaPage",
       "oemaPageSize"
     ])
   },
@@ -186,10 +276,22 @@ export default {
   },
   data() {
     return {
-      id:'',
-      oeTableData:[],
-      mingxiTotal:0,
-      dialogVisible:false,
+      ppformInline:{
+        brand_id:''
+      },
+      ppdialogVisible: false,
+      ppTableData: [],
+      ppTotal: 0,
+      fileList: [],
+      myformData2: null,
+      daoruDialogVisible: false,
+      daochuForm: {
+        daochuVal: ""
+      },
+      id: "",
+      oeTableData: [],
+      mingxiTotal: 0,
+      dialogVisible: false,
       loading: false,
       activeName: "0",
       formInline: {
@@ -198,13 +300,96 @@ export default {
       },
       options: [],
       tableData: [],
-      total: 0
+      total: 0,
+      ppOptions:[],
     };
   },
   created() {
     this.getData();
+    this.getPPdata();
   },
   methods: {
+    async delppEdit(row){
+      const res = await this.$api.delItemPP({
+        bing_id:row.b_id
+      },this.id)
+      if (res) {
+        this.$message({
+          message: res.message,
+          type: "success"
+        });
+        this.getppData();
+      }
+    },
+    async onPPSubmit(){
+      const res = await this.$api.addItemPP({
+        brand_id:this.ppformInline.brand_id
+      },this.id)
+      if (res) {
+        this.$message({
+          message: res.message,
+          type: "success"
+        });
+        this.getppData();
+      }
+    },
+    async getPPdata() {
+      const res = await this.$api.brands({
+        limit: 100000,
+        page: 1,
+      });
+      this.ppOptions = res.data.data;
+    },
+    daoruHandleClose() {
+      this.daoruDialogVisible = false;
+    },
+    pphandleClose() {
+      this.ppdialogVisible = false;
+    },
+    daoru() {
+      this.daoruDialogVisible = true;
+    },
+    // 上传文件
+    newupLoadSuccess(params) {
+      console.log(params.file);
+      this.myformData2 = new FormData();
+      this.myformData2.append("import", params.file);
+      this.myformData2.append("token", sessionStorage.getItem("token"));
+      var configs = {
+        headers: {
+          "Content-Type": "multipart/form-data;charse=UTF-8"
+        }
+      };
+      axios
+        .post(
+          "https://carapi.luguangcar.com/admin/items/import",
+          this.myformData2,
+          configs
+        )
+        .then(res => {
+          console.log(res);
+          if (res) {
+            this.$alert(
+              `导入成功：${res.data.success_num}条，数据重复：${res.data.repeat_num}条，导入失败：${res.data.fail_num}条`,
+              "导入结果",
+              {
+                confirmButtonText: "确定",
+                callback: () => {
+                  this.daoruDialogVisible = false;
+                  this.fileList = [];
+                  this.getData();
+                }
+              }
+            );
+          }
+        })
+        .catch(err => {
+          this.$message({
+            message: err.response.data.message,
+            type: "warning"
+          });
+        });
+    },
     async getData() {
       this.loading = true;
       const res2 = await this.$api.categories();
@@ -300,17 +485,35 @@ export default {
         this.getData();
       }
     },
-    async getoeData() {
-      const res = await this.$api.item_oelist(
+    async getppData() {
+      const res = await this.$api.seeItemsPP(
         {
           page: this.oemaPage,
-          limit: this.oemaPageSize,
-          item_id:this.id
+          limit: this.oemaPageSize
         },
+        this.id
       );
+      console.log(res);
+      this.ppTableData = res.data.data;
+      this.ppTotal = res.data.total;
+    },
+    async getoeData() {
+      const res = await this.$api.item_oelist({
+        page: this.oemaPage,
+        limit: this.oemaPageSize,
+        item_id: this.id
+      });
       console.log(res);
       this.oeTableData = res.data.data;
       this.oeTotal = res.data.total;
+    },
+    toSeePP(row) {
+      console.log(row);
+      this.id = row.id;
+      this.brand_id = row.brand_id;
+      this.$store.commit("oemaPage", 1);
+      this.getppData();
+      this.ppdialogVisible = true;
     },
     toSeeOe(row) {
       console.log(row);
@@ -424,6 +627,40 @@ export default {
       text-align: center;
       border-radius: 4px;
     }
+  }
+}
+.myTable {
+  margin-top: 10px;
+  .xiala {
+    padding: 10px 20px;
+    .item {
+      font-size: 12px;
+    }
+  }
+  .flex {
+    display: flex;
+    align-items: center;
+  }
+  .fenye {
+    margin-top: 10px;
+  }
+  /deep/ .vxe-table--render-default .vxe-body--column {
+    line-height: 14px;
+    vertical-align: middle;
+  }
+  /deep/ .vxe-cell--label {
+    font-size: 12px;
+  }
+  /deep/ .vxe-cell--title {
+    font-size: 12px;
+  }
+  /deep/ .image-slot {
+    width: 38px;
+    height: 38px;
+    border: 1px solid #ddd;
+    line-height: 38px;
+    text-align: center;
+    border-radius: 4px;
   }
 }
 </style>

@@ -29,6 +29,7 @@
               <div v-if="scope.row.mytype == 'arr'">
                 <el-image
                   v-for="(item,i) in scope.row.value"
+                  :preview-src-list="[item]"
                   :key="i"
                   :src="item"
                   fit="fill"

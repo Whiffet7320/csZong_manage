@@ -97,7 +97,7 @@
           <vxe-table-column field="id" title="商品ID"></vxe-table-column>
           <vxe-table-column field="role" title="商品主图">
             <template slot-scope="scope">
-              <el-image :src="scope.row.preview_image" fit="fill" style="width: 40px; height: 40px">
+              <el-image :src="scope.row.preview_image" :preview-src-list="[scope.row.preview_image]" fit="fill" style="width: 40px; height: 40px">
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
                 </div>

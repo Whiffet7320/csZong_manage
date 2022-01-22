@@ -351,6 +351,14 @@ export default {
             }
         })
     },
+    ordersExport(obj) {
+        return myPost({
+            url: urls.ordersExport,
+            data: {
+                ...obj
+            }
+        })
+    },
     addPostage(obj) {
         return myPost({
             url: urls.postage,
@@ -388,6 +396,96 @@ export default {
     addItems(obj) {
         return myPost({
             url: urls.items,
+            data: {
+                ...obj
+            }
+        })
+    },
+    seeItemsPP(obj,id) {
+        return myGet({
+            url: `${urls.items}/${id}/brands`,
+            params: {
+                ...obj
+            }
+        })
+    },
+    addItemPP(obj,id) {
+        return myPost({
+            url: `${urls.items}/${id}/addbrands`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    delItemPP(obj,id) {
+        return myPost({
+            url: `${urls.items}/${id}/delbrands`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    message(obj) {
+        return myGet({
+            url: urls.message,
+            params: {
+                ...obj
+            }
+        })
+    },
+    delMessage(id) {
+        return myPost({
+            url: `${urls.message}/${id}/delete`,
+        })
+    },
+    addMessage(obj) {
+        return myPost({
+            url: `${urls.message}/add`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    homeimages(obj) {
+        return myGet({
+            url: urls.homeimages,
+            params: {
+                ...obj
+            }
+        })
+    },
+    updateHomeimages(obj,id) {
+        return myPost({
+            url: `${urls.homeimages}/${id}/update`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    addHomeimages(obj) {
+        return myPut({
+            url: `${urls.homeimages}/add`,
+            data: {
+                ...obj
+            }
+        })
+    },
+    delHomeimages(id) {
+        return myDelete({
+            url: `${urls.homeimages}/${id}/delete`,
+        })
+    },
+    brands(obj) {
+        return myGet({
+            url: urls.brands,
+            params: {
+                ...obj
+            }
+        })
+    },
+    upBrandsImg(obj,id) {
+        return myPost({
+            url: `${urls.brands}/${id}/update`,
             data: {
                 ...obj
             }

@@ -54,7 +54,7 @@
           <vxe-table-column field="item.id" title="商品ID"></vxe-table-column>
           <vxe-table-column field="item.main_img" title="商品主图">
             <template slot-scope="scope">
-              <el-image :src="scope.row.item.main_img" fit="fill" style="width: 40px; height: 40px">
+              <el-image :src="scope.row.item.main_img" :preview-src-list="[scope.row.main_img]" fit="fill" style="width: 40px; height: 40px">
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
                 </div>
@@ -65,6 +65,7 @@
             <template slot-scope="scope">
               <el-image
                 :src="scope.row.item.detail_img"
+                :preview-src-list="[scope.row.item.detail_img]"
                 fit="fill"
                 style="width: 40px; height: 40px"
               >
@@ -78,6 +79,7 @@
             <template slot-scope="scope">
               <el-image
                 v-for="(ele,i) in scope.row.item.prev_images"
+                :preview-src-list="[scope.row.item.prev_images]"
                 :key="i"
                 :src="ele"
                 fit="fill"

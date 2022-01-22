@@ -26,7 +26,7 @@
                 <el-col :span="12">
                   <el-form-item label="图片：">
                     <div @click="companyList" class="myImg">
-                      <el-image :src="lhForm.pic" fit="fill" style="width: 60px; height: 60px">
+                      <el-image :src="lhForm.pic" :preview-src-list="[lhForm.pic]" fit="fill" style="width: 60px; height: 60px">
                         <div slot="error" class="image-slot">
                           <i class="el-icon-picture-outline"></i>
                         </div>

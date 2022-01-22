@@ -27,7 +27,7 @@
           <vxe-table-column field="sub_title" title="副标题"></vxe-table-column>
           <vxe-table-column field="bg_img" title="背景图">
             <template slot-scope="scope">
-              <el-image :src="scope.row.bg_img" fit="fill" style="width: 40px; height: 40px">
+              <el-image :src="scope.row.bg_img" :preview-src-list="[scope.row.bg_img]" fit="fill" style="width: 40px; height: 40px">
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
                 </div>
@@ -36,7 +36,7 @@
           </vxe-table-column>
           <vxe-table-column field="icon" title="图标">
             <template slot-scope="scope">
-              <el-image :src="scope.row.icon" fit="fill" style="width: 40px; height: 40px">
+              <el-image :src="scope.row.icon" :preview-src-list="[scope.row.icon]" fit="fill" style="width: 40px; height: 40px">
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
                 </div>

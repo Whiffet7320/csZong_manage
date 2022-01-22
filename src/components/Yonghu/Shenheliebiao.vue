@@ -51,6 +51,7 @@
                         <el-image
                           v-if="row.shop_img"
                           :src="row.shop_img"
+                          :preview-src-list="[row.shop_img]"
                           fit="fill"
                           style="width: 80px; height: 80px"
                         >
@@ -97,6 +98,7 @@
               <el-image
                 v-if="scope.row"
                 :src="scope.row.business_license"
+                :preview-src-list="[scope.row.business_license]"
                 fit="fill"
                 style="width: 40px; height: 40px"
               >

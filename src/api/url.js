@@ -55,7 +55,12 @@ export default {
     goodsOrder: '/admin/goods-order', //商品订单列表
     manage_update:'/admin/manage_update',//修改账号
     manage_del:'/admin/manage_del',//删除账号
-    item_oelist:'/admin/item_oelist',//商品所属oe码列表
+    item_oelist:'/admin/item_oelist',//商品所属oe码列
+    ordersExport:'/admin/orders/export',//订单导出
+    brands:'/admin/brands',//品牌列表
+    message:'/admin/message',//通知列表
+    homeimages:'/admin/homeimages',//滚播图列表
+    
     // 模板
     productList: '/admin/product/list', //商品列表
     loginInfo: '/admin/login/info',
