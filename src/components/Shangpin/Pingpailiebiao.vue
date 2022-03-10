@@ -27,7 +27,7 @@
           <vxe-table-column field="role" title="品牌图标">
             <template slot-scope="scope">
               <div @click="companyList(scope.row)">
-                <el-image :src="scope.row.brand_icon" :preview-src-list="[scope.row.brand_icon]" fit="fill" style="width: 40px; height: 40px">
+                <el-image :src="scope.row.brand_icon"  fit="fill" style="width: 40px; height: 40px">
                   <div slot="error" class="image-slot">
                     <i class="el-icon-picture-outline"></i>
                   </div>

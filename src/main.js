@@ -22,7 +22,7 @@ Vue.use(VXETable)
 Vue.prototype.$api = api;
 Vue.prototype.$io = io;
 // Vue.prototype.$url = 'http://192.168.1.128:8094/admin'
-Vue.prototype.$url = 'http://pinapi.hxqhhhh.shop'
+Vue.prototype.$url = 'https://dev.cars.hxqhhhh.shop'
 // Vue.prototype.$url = 'http://192.168.50.142:9083'
 
 Vue.use(ElementUI);
@@ -47,7 +47,7 @@ Vue.config.productionTip = false;
 function initWebSocket() {
   var isDotNumList = [];
   // carapi.luguangcar.com
-  const socket = io('https://socketio.luguangcar.com/',{
+  const socket = io('https://dev.cars.hxqhhhh.shop',{
     transports: ['websocket']
   });
   socket.on("message", (data) => {

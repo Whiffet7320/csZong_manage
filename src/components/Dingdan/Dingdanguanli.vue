@@ -112,16 +112,16 @@
                     <el-col :span="6">
                       <div class="item">快递单号：{{ row.delivery_num ? row.delivery_num :'无'}}</div>
                     </el-col>
-                    <!-- <el-col :span="6">
-                      <div
-                        class="item"
-                      >师傅名称：{{ row.selected_quote? row.selected_quote.user_info.nick_name:'无' }}</div>
-                    </el-col>
                     <el-col :span="6">
                       <div
                         class="item"
+                      >快递名称：{{ row.delivery_com ? row.delivery_com :'无'}}</div>
+                    </el-col>
+                    <!-- <el-col :span="6">
+                      <div
+                        class="item"
                       >师傅电话：{{ row.selected_quote?row.selected_quote.user.phone:'无' }}</div>
-                    </el-col>-->
+                    </el-col> -->
                   </el-row>
                   <!-- <el-row :gutter="20">
                     <el-col :span="6">
@@ -213,9 +213,9 @@
           <el-form-item label="快递单号" prop="delivery_code">
             <el-input size="small" v-model="fahuoForm.delivery_code"></el-input>
           </el-form-item>
-          <!-- <el-form-item label="快递名称" prop="delivery_name">
-            <el-input size="small" v-model="fahuoForm.delivery_name"></el-input>
-          </el-form-item>-->
+          <el-form-item label="快递名称" prop="delivery_com">
+            <el-input size="small" v-model="fahuoForm.delivery_com"></el-input>
+          </el-form-item>
           <el-form-item>
             <el-button size="small" type="primary" @click="submitForm('fahuoForm')">发货</el-button>
           </el-form-item>
@@ -320,7 +320,7 @@ export default {
       fahuoDialogVisible: false,
       fahuoForm: {
         delivery_code: "",
-        delivery_name: ""
+        delivery_com: ""
       },
       rules: {
         delivery_code: [
@@ -449,7 +449,8 @@ export default {
         if (valid) {
           const res = await this.$api.ordersFahuo(
             {
-              delivery_num: this.fahuoForm.delivery_code
+              delivery_num: this.fahuoForm.delivery_code,
+              delivery_com: this.fahuoForm.delivery_com,
             },
             this.fahuoId
           );

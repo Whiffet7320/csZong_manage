@@ -2,7 +2,7 @@ export default {
     // 线上地址 http://car_admin.5laoye.com/ 账号和密码都是admin
     // 如师傅
     // baseUrl:'http://192.168.50.96:8001',
-    baseUrl: 'https://carapi.luguangcar.com/',
+    baseUrl: 'https://dev.cars.hxqhhhh.shop',
     login: '/admin/login', //登录
     users: '/admin/users', //用户列表
     items:'/admin/items',//商品列表

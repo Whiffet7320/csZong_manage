@@ -234,9 +234,12 @@ export default {
       for (const key in this.addForm) {
         this.addForm[key] = "";
       }
+      this.addDialogVisible = true;
+      setTimeout(()=>{
+        console.log(this.$refs)
       this.$refs.tree.setCheckedKeys([]);
       this.isAdd = true;
-      this.addDialogVisible = true;
+      },100)
     },
     async submitForm() {
       const res = await this.$api.updat_user_info({
