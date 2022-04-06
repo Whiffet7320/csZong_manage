@@ -32,7 +32,21 @@ Viewer.setDefaults({
 })
 
 router.beforeEach((to, from, next) => {
-  console.log(to)
+  console.log(to.fullPath)
+  var menu = JSON.parse(decodeURIComponent(sessionStorage.getItem("menu")))
+  // console.log(menu)
+  var flag = false;
+  menu.forEach(ele=>{
+    ele.sub_menu.forEach(ele2=>{
+      if(to.fullPath.indexOf(ele2.url) != -1){
+        flag = true;
+      }
+    })
+  })
+  console.log(flag)
+  if(!flag && to.fullPath != '/NotFound/NotFound404'){
+    next({name:'NotFound404'})
+  }
   // 如果有token 说明该用户已登陆
   if (sessionStorage.getItem("isLogin")=='true') {
     // 在已登陆的情况下访问登陆页会重定向到首页
@@ -42,12 +56,13 @@ router.beforeEach((to, from, next) => {
   }
 });
 
+
 Vue.config.productionTip = false;
 //进入页面创建websocket连接
 function initWebSocket() {
   var isDotNumList = [];
   // carapi.luguangcar.com
-  const socket = io('https://dev.cars.hxqhhhh.shop',{
+  const socket = io('https://carsocketio.5laoye.com',{
     transports: ['websocket']
   });
   socket.on("message", (data) => {

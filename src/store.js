@@ -8,6 +8,8 @@ export default new Vuex.Store({
     overallIsDot:false,
     isDotNum:[],
     havaMessage:false,
+    xiaoshoubiaoPage: 1, //销售
+    xiaoshoubiaoPageSize: 10,
     // 如师傅
     shopObj: null,
     zijinmingxiliebiaoPage: 1, //用户-资金余额明细列表
@@ -89,6 +91,12 @@ export default new Vuex.Store({
     shouyePageSize: 10,
   },
   mutations: {
+    xiaoshoubiaoPage(state, str) {
+      state.xiaoshoubiaoPage = str;
+    },
+    xiaoshoubiaoPageSize(state, str) {
+      state.xiaoshoubiaoPageSize = str;
+    },
     havaMessage(state, str) {
       state.havaMessage = str;
     },

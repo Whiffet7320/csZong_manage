@@ -393,7 +393,7 @@ export default {
       });
     },
     initWebSocket() {
-      this.socket = this.$io("https://socketio.luguangcar.com/", {
+      this.socket = this.$io("https://carsocketio.5laoye.com", {
         transports: ["websocket"]
       });
       this.socket.on("message", data => {

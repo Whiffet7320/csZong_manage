@@ -4,28 +4,35 @@
       <div class="tit1">轮播图列表</div>
     </div>
     <div class="nav2">
-      <!-- <div class="myForm">
+      <div class="myForm">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-row>
             <el-col :span="20">
               <el-form-item label="类型：">
-                <el-radio-group @change="changeRad" v-model="formInline.rad1" size="small">
-                  <el-radio-button v-for="(item,i) in radioArr" :key="i" :label="i">{{item}}</el-radio-button>
+                <el-radio-group v-model="formInline.rad1" size="small" @change="changRad1">
+                  <el-radio-button label="-1">全部</el-radio-button>
+                  <el-radio-button label="0">隐藏</el-radio-button>
+                  <el-radio-button label="1">显示</el-radio-button>
                 </el-radio-group>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
-      </div> -->
+      </div>
       <div class="tit1">
         <el-button @click="AddLunbotu" size="small" type="primary" icon="el-icon-plus">添加轮播图</el-button>
       </div>
       <div class="myTable">
         <vxe-table :data="tableData">
-          <vxe-table-column field="id" title="ID"></vxe-table-column>
+          <vxe-table-column field="id" width="50" title="ID"></vxe-table-column>
           <vxe-table-column field="image" title="轮播图">
             <template slot-scope="scope">
-              <el-image :src="scope.row.pic" :preview-src-list="[scope.row.pic]" fit="fill" style="width: 40px; height: 40px">
+              <el-image
+                :src="scope.row.pic"
+                :preview-src-list="[scope.row.pic]"
+                fit="fill"
+                style="width: 40px; height: 40px"
+              >
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
                 </div>
@@ -39,8 +46,7 @@
               <el-switch @change="changeKG(scope.row)" v-model="scope.row.isShow"></el-switch>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="created_at" title="添加时间"></vxe-table-column>
-          <vxe-table-column title="操作状态" width="180">
+          <vxe-table-column title="操作状态" width="120">
             <template slot-scope="scope">
               <div class="flex">
                 <el-button size="small" @click="tabEdit(scope.row)" type="text">编辑</el-button>
@@ -90,18 +96,27 @@
             <el-row>
               <el-col :span="18">
                 <el-form-item label="跳转类型：">
-                  <el-select size="small" v-model="ruleForm.types" placeholder="请选择">
-                    <el-option label="积分商品" :value="2"></el-option>
-                    <el-option label="普通商品" :value="1"></el-option>
-                    <el-option label="链接" :value="0"></el-option>
+                  <el-select size="small" v-model="ruleForm.url_type" placeholder="请选择">
+                    <el-option label="内部链接" :value="1"></el-option>
+                    <el-option label="外部链接" :value="2"></el-option>
                   </el-select>
                 </el-form-item>
               </el-col>
             </el-row>
             <el-row>
               <el-col :span="18">
-                <el-form-item label="跳转地址/(ID)：">
+                <el-form-item label="跳转地址：">
                   <el-input size="small" v-model="ruleForm.url"></el-input>
+                </el-form-item>
+              </el-col>
+            </el-row>
+            <el-row>
+              <el-col :span="12">
+                <el-form-item label="状态">
+                  <el-radio-group v-model="ruleForm.is_status">
+                    <el-radio :label="1">显示</el-radio>
+                    <el-radio :label="0">隐藏</el-radio>
+                  </el-radio-group>
                 </el-form-item>
               </el-col>
             </el-row>
@@ -151,7 +166,7 @@ export default {
       radioArr: [],
       radioArr2: [],
       formInline: {
-        rad1: ""
+        rad1: "-1"
       },
       tableData: [],
       total: 0,
@@ -160,7 +175,7 @@ export default {
       ruleForm: {
         pic: "",
         url: "",
-        types: "",
+        url_type: "",
         is_status: 1
       },
       id: ""
@@ -171,22 +186,25 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.homeimages({
-        limit: this.lunbotuliebiaoPageSize,
-        page: this.lunbotuliebiaoPage
+      const res = await this.$api.swiper_list({
+        pagesize: this.lunbotuliebiaoPageSize,
+        page: this.lunbotuliebiaoPage,
+        is_status:this.formInline.rad1
       });
       console.log(res.data);
-      this.tableData = res.data.data;
+      if (res.data.total > 0) {
+        this.tableData = res.data.list;
+      }else{
+        this.tableData = []
+      }
       this.total = res.data.total;
       this.tableData.forEach(ele => {
-        ele.myType =
-          ele.types == "0"
-            ? "链接"
-            : ele.types == "1"
-            ? "普通商品"
-            : "积分商品";
+        ele.myType = ele.url_type == 1 ? "内部链接" : "外部链接";
         ele.isShow = ele.is_status == "1" ? true : false;
       });
+    },
+    changRad1(){
+      this.getData()
     },
     AddLunbotu() {
       for (const key in this.ruleForm) {
@@ -205,15 +223,15 @@ export default {
       this.isAdd = false;
       this.id = row.id;
       this.ruleForm.pic = row.pic;
-      this.ruleForm.types = row.types;
+      this.ruleForm.url_type = row.url_type;
       this.ruleForm.url = row.url;
       this.ruleForm.is_status = row.is_status;
       this.dialogVisible = true;
     },
     // 删除
     async tabDel(row) {
-      const res = await this.$api.delHomeimages(row.id);
-      if (res) {
+      const res = await this.$api.swiper_delete({id:row.id});
+      if (res.data.result == 1) {
         this.$message({
           message: "删除成功",
           type: "success"
@@ -225,32 +243,30 @@ export default {
     async submitForm() {
       if (this.isAdd) {
         // 添加
-        const res = await this.$api.addHomeimages({
+        const res = await this.$api.add_swiper({
           pic: this.ruleForm.pic,
-          types: this.ruleForm.types,
+          url_type: this.ruleForm.url_type,
           url: this.ruleForm.url,
-          is_status: this.ruleForm.is_status,
+          is_status: this.ruleForm.is_status
         });
         console.log(res);
-        if (res) {
+        if (res.data.result == 1) {
           this.$message({
-            message: "添加成功",
+            message: res.msg,
             type: "success"
           });
-          this.getData();
           this.dialogVisible = false;
+          this.getData();
         }
       } else {
         // 编辑
-        const res = await this.$api.updateHomeimages(
-          {
-            pic: this.ruleForm.pic,
-            types: this.ruleForm.types,
-            url: this.ruleForm.url,
-            is_status: this.ruleForm.is_status,
-          },
-          this.id
-        );
+        const res = await this.$api.edit_swiper({
+          id: this.id,
+          pic: this.ruleForm.pic,
+          url_type: this.ruleForm.url_type,
+          url: this.ruleForm.url,
+          is_status: this.ruleForm.is_status
+        });
         console.log(res);
         if (res) {
           this.$message({
@@ -265,16 +281,11 @@ export default {
     // 开关（显示/隐藏）
     async changeKG(row) {
       console.log(row);
-      const res = await this.$api.updateHomeimages(
-        {
-          pic: row.pic,
-          types: row.types,
-          url: row.url,
-          is_status: row.is_status == "1" ? "0" : "1"
-        },
-        row.id
-      );
-      if (res) {
+      const res = await this.$api.swiper_setstatus({
+        id: row.id,
+        is_status: row.is_status == "1" ? "0" : "1"
+      });
+      if (res.data.result == 1) {
         this.$message({
           message: res.msg,
           type: "success"
@@ -301,41 +312,36 @@ export default {
         };
       });
     },
-    async uploading(flag) {
-      // console.log(document.getElementById("file0").value);
-      if (flag) {
-        var file_re = await this.readFileAsBuffer(this.imgFile);
-        const res = await this.$api.uploadToken();
-        let myData = res.data;
-        console.log(myData);
-        let client = new window.OSS.Wrapper({
-          region: myData.region, //oss地址
-          accessKeyId: myData.accessKeyId, //ak
-          accessKeySecret: myData.accessKeySecret, //secret
-          stsToken: myData.stsToken,
-          bucket: myData.bucket //oss名字
-        });
-        var imgtype = this.imgFile.type.substr(6, 4);
-        var store = `${new Date().getTime()}.${imgtype}`;
-        client.put(store, file_re).then(() => {
-          //这个结果就是url
-          console.log(store);
-          // var oss_imgurl = client.signatureUrl(store);
-          var oss_imgurl = `https://${myData.bucket}.${myData.url}/${store}`;
-          this.$set(this.ruleForm, "pic", oss_imgurl);
-          console.log(oss_imgurl);
-        });
+    async companyLogo(event) {
+      const that = this;
+      var file = event.target.files[0];
+      var fileSize = file.size; //文件大小
+      var filetType = file.type; //文件类型
+      //创建文件读取对象
+      // console.log(file);
+      if (fileSize <= 10240 * 1024) {
+        if (
+          filetType == "image/png" ||
+          filetType == "image/jpeg" ||
+          filetType == "image/gif"
+        ) {
+          this.imgFile = new FormData();
+          this.imgFile.append("pic", file);
+          this.imgFile.append("token", sessionStorage.getItem("token"));
+          sessionStorage.setItem("img", 123);
+          const res = await that.$api.upload_pic(this.imgFile);
+          this.$set(this.ruleForm, "pic", res.data.pic_url);
+          that.$refs.fileInputList.value = "";
+        } else {
+          this.$message.error("图片格式不正确");
+        }
+      } else {
+        this.$message.error("图片大小不正确");
       }
     },
     // 删除图片
     delImg() {
-      this.$set(this.lhForm, "pic", "");
-    },
-    companyLogo(event) {
-      var file = event.target.files[0];
-      this.imgFile = file;
-      this.uploading(true);
-      this.$refs.fileInputList.value = "";
+      this.$set(this.ruleForm, "pic", "");
     },
     handleClose() {
       this.dialogVisible = false;

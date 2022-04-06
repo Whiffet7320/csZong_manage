@@ -125,18 +125,18 @@ export default {
     // 登录
     async onLogin() {
       const res = await this.$api.login({
-        phone: this.loginForm.username,
-        password: this.loginForm.password
+        username: this.loginForm.username,
+        userpass: this.loginForm.password
       });
       console.log(res);
       if (res && res.status == 200) {
-        sessionStorage.setItem("token", res.data.token_info.access_token);
+        sessionStorage.setItem("token", res.data.token);
         sessionStorage.setItem("isLogin", true);
-        sessionStorage.setItem("userInfo", JSON.stringify(res.data.user));
-        sessionStorage.setItem("userId", res.data.user.id);
+        // sessionStorage.setItem("userInfo", JSON.stringify(res.data.user));
+        // sessionStorage.setItem("userId", res.data.user.id);
         sessionStorage.setItem(
           "menu",
-          encodeURIComponent(JSON.stringify(res.data.user.menu))
+          encodeURIComponent(JSON.stringify(res.data.menu_list))
         );
         sessionStorage.setItem("toShouye", 'yes');
         this.$message({
@@ -144,8 +144,8 @@ export default {
           type: "success"
         });
         setTimeout(() => {
-          this.$router.push({ path: "/" });
-          this.$router.go(0);
+          // this.$router.push({ path: "/Shangping/Shangpingfenlei" });
+          // this.$router.go(0);
         }, 500);
       }
     }

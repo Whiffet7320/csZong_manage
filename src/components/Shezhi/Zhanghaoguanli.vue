@@ -1,7 +1,7 @@
 <template>
   <div class="index">
     <div class="nav1">
-      <div class="tit1">账号管理</div>
+      <div class="tit1">权限账号管理</div>
       <div class="tit2">
         <!-- <el-tabs v-model="activeName" @tab-click="tabsHandleClick">
           <el-tab-pane label="全部" name="1"></el-tab-pane>
@@ -36,7 +36,23 @@
       <div class="myTable">
         <vxe-table height="700" :loading="loading" :data="tableData">
           <vxe-table-column field="id" title="ID"></vxe-table-column>
-          <vxe-table-column field="phone" title="用户名"></vxe-table-column>
+          <vxe-table-column field="user_name" title="账号"></vxe-table-column>
+          <vxe-table-column field="realname" title="用户名"></vxe-table-column>
+          <vxe-table-column field="pic" title="头像">
+            <template slot-scope="scope">
+              <el-image :src="scope.row.userface" fit="fill" style="width: 40px; height: 40px">
+                <div slot="error" class="image-slot">
+                  <i class="el-icon-picture-outline"></i>
+                </div>
+              </el-image>
+            </template>
+          </vxe-table-column>
+          <vxe-table-column field="mobile" title="手机号"></vxe-table-column>
+          <vxe-table-column field="myIs_status" title="状态(是否开启)">
+            <template slot-scope="scope">
+              <el-switch @change="changeKG(scope.row)" v-model="scope.row.myIs_status"></el-switch>
+            </template>
+          </vxe-table-column>
           <vxe-table-column field="qx" title="权限"></vxe-table-column>
           <!-- <vxe-table-column field="user_info.shop_name" title="店铺名称"></vxe-table-column> -->
           <!-- <vxe-table-column field="user_info.shop_phone" title="店铺联系方式"></vxe-table-column> -->
@@ -73,7 +89,12 @@
           <el-row>
             <el-col :span="20">
               <el-form-item label="用户名：">
-                <el-input :disabled='!isAdd' size="small" placeholder="请输入用户名" v-model="addForm.username"></el-input>
+                <el-input
+                  :disabled="!isAdd"
+                  size="small"
+                  placeholder="请输入用户名"
+                  v-model="addForm.username"
+                ></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -81,6 +102,43 @@
             <el-col :span="20">
               <el-form-item label="密码：">
                 <el-input size="small" v-model="addForm.userpass"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="20">
+              <el-form-item label="确认密码：">
+                <el-input size="small" v-model="addForm.reuserpass"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="20">
+              <el-form-item label="头像">
+                <div @click="companyList('tb')" class="myImg">
+                  <el-image :src="addForm.userface" fit="fill" style="width: 60px; height: 60px">
+                    <div slot="error" class="image-slot">
+                      <i class="el-icon-picture-outline"></i>
+                    </div>
+                  </el-image>
+                  <div @click.stop="delImg('tb')" class="closeBtn">
+                    <el-button circle>×</el-button>
+                  </div>
+                </div>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="20">
+              <el-form-item label="姓名：">
+                <el-input size="small" v-model="addForm.realname"></el-input>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="20">
+              <el-form-item label="手机号：">
+                <el-input :disabled="!isAdd" size="small" v-model="addForm.mobile"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -108,6 +166,15 @@
         </el-form>
       </div>
     </el-dialog>
+    <input
+      type="file"
+      name="companyLogo"
+      id="file0"
+      class="displayN"
+      multiple="multiple"
+      @change="companyLogo($event)"
+      ref="fileInputList"
+    />
   </div>
 </template>
 
@@ -142,7 +209,11 @@ export default {
       quanxianList: [],
       addForm: {
         username: "",
-        userpass: ""
+        userpass: "",
+        mobile: "",
+        realname: "",
+        userface: "",
+        reuserpass: ""
       },
       addDialogVisible: false,
       activeName: "1",
@@ -185,14 +256,16 @@ export default {
         this.splice(index, 1);
       }
     };
-    this.getData();
     this.getQXdata();
+    setTimeout(()=>{
+      this.getData();
+    },500)
   },
   methods: {
     async getQXdata() {
-      const res = await this.$api.manage_limit();
+      const res = await this.$api.limits();
       console.log(res);
-      this.quanxianList = res.data;
+      this.quanxianList = res.data.list;
       this.quanxianList = JSON.parse(
         JSON.stringify(this.quanxianList).replace(/name/g, "label")
       );
@@ -202,30 +275,51 @@ export default {
     },
     async getData() {
       this.loading = true;
-      const res = await this.$api.manage_list({
+      const res = await this.$api.adminuser_list({
         limit: this.ZhanghaobiaoPageSize,
         page: this.ZhanghaobiaoPage
       });
-      console.log(res.data);
+      if (res.data.total == 0) {
+        this.tableData = [];
+      }
       this.total = res.data.total;
-      res.data.data.forEach(async ele => {
+      res.data.list.forEach(async ele => {
+        ele.myIs_status = ele.is_status == '1' ? true : false;
         ele.qx = "";
-        const res2 = await this.$api.manage_limitview({
-          ids: ele.user_limit
-        });
-        console.log(res2);
         var arr = [];
-        res2.data.forEach(ele2 => {
-          arr.push(ele2.name);
+        ele.myLimits2 = [];
+        ele.myLimits = ele.limits.split(",");
+        ele.myLimits.forEach(ele2 => {
+          this.quanxianList.forEach(ele3 => {
+            ele3.children.forEach(ele4 => {
+              if (ele4.id == ele2) {
+                arr.push(ele4.label);
+                ele.myLimits2.push(ele4.id)
+              }
+            });
+          });
         });
-        console.log(arr.toString());
         this.$set(ele, "qx", arr.toString());
+        setTimeout(() => {
+          this.$set(this, "tableData", res.data.list);
+          this.loading = false;
+        }, 500);
       });
-      setTimeout(() => {
-        this.tableData = res.data.data;
-        this.loading = false;
-      }, 1000);
-      console.log(this.tableData);
+    },
+    // 开关（显示/隐藏）
+    async changeKG(row) {
+      console.log(row);
+      const res = await this.$api.adminuser_setstatusval({
+        user_id: row.id,
+        is_status: row.is_status == '0' ? "1" : "0"
+      });
+      if (res.data.result == 1) {
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+        this.getData();
+      }
     },
     addHandleClose() {
       this.addDialogVisible = false;
@@ -235,11 +329,11 @@ export default {
         this.addForm[key] = "";
       }
       this.addDialogVisible = true;
-      setTimeout(()=>{
-        console.log(this.$refs)
-      this.$refs.tree.setCheckedKeys([]);
-      this.isAdd = true;
-      },100)
+      setTimeout(() => {
+        console.log(this.$refs);
+        this.$refs.tree.setCheckedKeys([]);
+        this.isAdd = true;
+      }, 100);
     },
     async submitForm() {
       const res = await this.$api.updat_user_info({
@@ -321,16 +415,16 @@ export default {
     },
     async tabDel(row) {
       //  manage_del
-      const res = await this.$api.manage_del(row.id)
-      if (res) {
+      const res = await this.$api.adminuser_del({user_id:row.id});
+      if (res.data.result == 1) {
           this.$message({
-            message: "删除成功",
+            message: res.data.msg,
             type: "success"
           });
           this.getData();
           this.addDialogVisible = false;
         } else {
-          this.$message.error(res.msg);
+          this.$message.error(res.data.msg);
           this.getData();
         }
     },
@@ -338,21 +432,21 @@ export default {
       this.id = row.id;
       this.isAdd = false;
       console.log(row);
-      this.addForm.username = row.phone;
+      this.addForm.username = row.user_name;
+      this.addForm.realname = row.realname;
+      this.addForm.userface = row.userface;
+      this.addForm.mobile = row.mobile;
       this.addDialogVisible = true;
-      const res = await this.$api.manage_viewId(row.id);
-      console.log(res.data.menu);
       var arr = [];
-      res.data.menu.forEach(ele => {
-        if (ele.sub_menu) {
-          ele.sub_menu.forEach(ele2 => {
-            arr.push(ele2.id);
-          });
-        }
+      row.myLimits2.forEach(ele => {
+        arr.push(ele);
       });
       console.log(arr);
-      console.log(this.$refs);
-      this.$refs.tree.setCheckedKeys(arr);
+      setTimeout(() => {
+        console.log(this.$refs, this.$refs.fileInputList);
+        this.$refs.tree.setCheckedKeys(arr);
+      }, 500);
+
       // res.data.menu.forEach(ele => {
       //   this.checkList.push(ele.id);
       //   // this.$set(this.quanxianList.ziCheckList)
@@ -399,40 +493,40 @@ export default {
       console.log(arr.toString());
       if (this.isAdd) {
         // 添加
-        const res = await this.$api.manage_add({
+        const res = await this.$api.add_adminuser({
           ...this.addForm,
           limit: [...new Set(arr)].toString()
         });
         console.log(res);
-        if (res) {
+        if (res.data.result == 1) {
           this.$message({
-            message: "添加成功",
+            message: res.data.msg,
             type: "success"
           });
           this.getData();
           this.addDialogVisible = false;
         } else {
-          this.$message.error(res.msg);
+          this.$message.error(res.data.msg);
           this.getData();
         }
       } else {
-        const res = await this.$api.manage_update(
+        const res = await this.$api.update_adminuser(
           {
             ...this.addForm,
+            user_id:this.id,
             limit: [...new Set(arr)].toString()
           },
-          this.id
         );
         console.log(res);
-        if (res) {
+        if (res.data.result == 1) {
           this.$message({
-            message: "修改成功",
+            message: res.data.msg,
             type: "success"
           });
           this.getData();
           this.addDialogVisible = false;
         } else {
-          this.$message.error(res.msg);
+          this.$message.error(res.data.msg);
           this.getData();
         }
       }
@@ -468,6 +562,47 @@ export default {
       var ss =
         date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
       return YY + MM + DD + " " + hh + mm + ss;
+    },
+    // 删除图片
+    delImg(val) {
+      if (val == "tb") {
+        this.$set(this.addForm, "userface", "");
+      }
+    },
+    // 上传图片
+    companyList(val) {
+      this.imgStatus = val;
+      this.$refs.fileInputList.click();
+    },
+    async companyLogo(event) {
+      const that = this;
+      var file = event.target.files[0];
+      var fileSize = file.size; //文件大小
+      var filetType = file.type; //文件类型
+      //创建文件读取对象
+      // console.log(file);
+      if (fileSize <= 10240 * 1024) {
+        if (
+          filetType == "image/png" ||
+          filetType == "image/jpeg" ||
+          filetType == "image/gif"
+        ) {
+          this.imgFile = new FormData();
+          this.imgFile.append("pic", file);
+          this.imgFile.append("token", sessionStorage.getItem("token"));
+          sessionStorage.setItem("img", 123);
+          const res = await that.$api.upload_pic(this.imgFile);
+          console.log(res.data.pic_url);
+          if (this.imgStatus == "tb") {
+            this.$set(this.addForm, "userface", res.data.pic_url);
+          }
+          that.$refs.fileInputList.value = "";
+        } else {
+          this.$message.error("图片格式不正确");
+        }
+      } else {
+        this.$message.error("图片大小不正确");
+      }
     },
     // 分页
     handleSizeChange(val) {
@@ -694,5 +829,8 @@ export default {
       }
     }
   }
+}
+.displayN {
+  display: none;
 }
 </style>

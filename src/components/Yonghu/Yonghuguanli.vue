@@ -13,7 +13,7 @@
     <div class="nav2">
       <div class="myForm">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
-          <el-form-item label="用户搜索：">
+          <!-- <el-form-item label="用户搜索：">
             <div class="search">
               <el-input
                 size="small"
@@ -21,7 +21,7 @@
                 v-model="formInline.search"
                 class="input-with-select"
               >
-                <!-- <el-select
+                <el-select
                   class="left-select"
                   v-model="formInline.select"
                   slot="prepend"
@@ -31,9 +31,16 @@
                   <el-option label="UID" value="2"></el-option>
                   <el-option label="手机号" value="3"></el-option>
                   <el-option label="用户名称" value="4"></el-option>
-                </el-select>-->
+                </el-select>
               </el-input>
             </div>
+          </el-form-item>-->
+          <el-form-item label="订单状态：">
+            <el-radio-group v-model="formInline.rad1" size="small" @change="changRad1">
+              <el-radio-button label="0">全部</el-radio-button>
+              <el-radio-button label="1">普通</el-radio-button>
+              <el-radio-button label="2">超级会员</el-radio-button>
+            </el-radio-group>
           </el-form-item>
           <el-form-item>
             <el-button size="small" icon="el-icon-search" type="primary" @click="onSubmit">搜索</el-button>
@@ -51,12 +58,12 @@
         >-->
       </div>
       <div class="myTable">
-        <vxe-table height='700' :loading="loading" :data="tableData">
+        <vxe-table height="700" :loading="loading" :data="tableData">
           <vxe-table-column type="expand" width="30" :fixed="null">
             <template #content="{ row }">
               <template>
                 <div class="xiala">
-                  <el-row :gutter="20">
+                  <!-- <el-row :gutter="20">
                     <el-col :span="6">
                       <div class="item">
                         店铺图：
@@ -74,41 +81,37 @@
                       </div>
                     </el-col>
                   </el-row>
-                  <div style="margin-top: 16px"></div>
+                  <div style="margin-top: 16px"></div> -->
                   <el-row :gutter="20">
                     <el-col :span="6">
-                      <div class="item">店铺名称：{{row.user_info?row.user_info.shop_name:''}}</div>
+                      <div class="item">手机号：{{row.mobile}}</div>
                     </el-col>
                     <el-col :span="6">
-                      <div class="item">店铺联系方式：{{row.user_info? row.user_info.shop_phone:'' }}</div>
+                      <div class="item">身份证：{{row.idcard}}</div>
                     </el-col>
-                    <el-col :span="10">
-                      <div
-                        class="item"
-                        v-if="row.user_info"
-                      >地址：{{ row.user_info.area }} {{row.user_infodetail_address}}</div>
+                     <el-col :span="6">
+                      <div class="item">邮箱：{{row.email}}</div>
+                    </el-col>
+                     <el-col :span="6">
+                      <div class="item">余额：{{row.money}}</div>
                     </el-col>
                   </el-row>
                   <div style="margin-top: 16px"></div>
                   <el-row :gutter="20">
                     <el-col :span="6">
-                      <div class="item">邀请码：{{row.invite_code}}</div>
-                    </el-col>
-                    <el-col :span="6">
-                      <div class="item">用户手机号：{{ row.phone }}</div>
+                      <div class="item">积分：{{row.integral}}</div>
                     </el-col>
                   </el-row>
                 </div>
               </template>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="id" title="ID"></vxe-table-column>
-          <vxe-table-column field="avatar" title="企业图标/头像">
+          <vxe-table-column width="50" field="id" title="ID"></vxe-table-column>
+          <vxe-table-column field="avatar" title="头像">
             <template slot-scope="scope">
               <el-image
-                v-if="scope.row.user_info"
-                :src="scope.row.user_info.avatar"
-                :preview-src-list="[scope.row.user_info.avatar]"
+                :src="scope.row.facepic"
+                :preview-src-list="[scope.row.facepic]"
                 fit="fill"
                 style="width: 40px; height: 40px"
               >
@@ -118,31 +121,20 @@
               </el-image>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="avatar" title="企业营业执照">
-            <template slot-scope="scope">
-              <el-image
-                v-if="scope.row.user_info"
-                :src="scope.row.user_info.business_license"
-                :preview-src-list="[scope.row.user_info.business_license]"
-                fit="fill"
-                style="width: 40px; height: 40px"
-              >
-                <div slot="error" class="image-slot">
-                  <i class="el-icon-picture-outline"></i>
-                </div>
-              </el-image>
-            </template>
-          </vxe-table-column>
-          <vxe-table-column field="user_info.nick_name" title="企业名称"></vxe-table-column>
+          <vxe-table-column field="nickname" title="用户名"></vxe-table-column>
+          <vxe-table-column field="realname" title="姓名"></vxe-table-column>
+          <!-- <vxe-table-column field="mobile" title="手机号"></vxe-table-column>
+          <vxe-table-column field="idcard" title="身份证"></vxe-table-column>
+          <vxe-table-column field="email" title="邮箱"></vxe-table-column>
+          <vxe-table-column field="money" title="余额"></vxe-table-column>
+          <vxe-table-column field="commission_money" title="佣金余额"></vxe-table-column>
+          <vxe-table-column field="integral" title="积分"></vxe-table-column> -->
           <vxe-table-column field="myType" title="类型"></vxe-table-column>
-          <vxe-table-column field="myUser_infoStatus" title="审核状态"></vxe-table-column>
-          <!-- <vxe-table-column field="user_info.shop_name" title="店铺名称"></vxe-table-column> -->
-          <!-- <vxe-table-column field="user_info.shop_phone" title="店铺联系方式"></vxe-table-column> -->
-          <vxe-table-column field="score" title="积分"></vxe-table-column>
-          <vxe-table-column title="操作状态" width="150">
+          <vxe-table-column title="操作状态" width="140">
             <template slot-scope="scope">
               <div class="flex">
                 <el-button size="small" type="text" @click="tabEdit(scope.row)">编辑</el-button>
+                <el-button size="small" type="text" @click="seeJifen(scope.row)">查看积分</el-button>
               </div>
             </template>
           </vxe-table-column>
@@ -159,32 +151,30 @@
         ></el-pagination>
       </div>
     </div>
-    <!-- 查看明细 -->
-    <el-dialog title="查看明细" :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
-      <div class="myForm">
+    <!-- 查看积分 -->
+    <el-dialog title="查看积分" :visible.sync="dialogVisible" width="80%" :before-close="handleClose">
+      <!-- <div class="myForm">
         <el-form ref="mingxiFrom" :model="mingxiFrom" label-width="80px">
           <el-row>
             <el-col :span="20">
               <el-form-item label="状态：">
                 <el-radio-group @change="changeMingxiRadio" v-model="mingxiFrom.rad1" size="small">
-                  <el-radio-button label="1">资金余额明细</el-radio-button>
-                  <el-radio-button label="2">积分明细</el-radio-button>
-                  <!-- <el-radio-button label="3">收益明细</el-radio-button> -->
+                  <el-radio-button label="0">未审核</el-radio-button>
+                  <el-radio-button label="1">已审核</el-radio-button>
+                  <el-radio-button label="2">审核拒绝</el-radio-button>
                 </el-radio-group>
               </el-form-item>
             </el-col>
           </el-row>
         </el-form>
-      </div>
+      </div>-->
       <div class="myTable">
         <vxe-table :data="mingxiTableData">
-          <vxe-table-column field="user_id" title="ID"></vxe-table-column>
-          <vxe-table-column field="myPm" title="支出/获得"></vxe-table-column>
-          <vxe-table-column field="value" title="变动金额"></vxe-table-column>
-          <vxe-table-column field="after_money" title="变动后金额"></vxe-table-column>
-          <!-- <vxe-table-column field="mark" width="250" title="备注"></vxe-table-column> -->
-          <!-- <vxe-table-column field="pay_way" width="120" title="支付方式"></vxe-table-column> -->
-          <vxe-table-column field="created_at" title="时间"></vxe-table-column>
+          <vxe-table-column field="id" title="ID"></vxe-table-column>
+          <vxe-table-column field="myTypes" title="类型"></vxe-table-column>
+          <vxe-table-column field="myAdd_sub" title="支出/收入"></vxe-table-column>
+          <vxe-table-column field="integral" title="变动积分"></vxe-table-column>
+          <vxe-table-column field="createtime" title="时间"></vxe-table-column>
         </vxe-table>
         <el-pagination
           class="fenye"
@@ -209,103 +199,18 @@
         <el-form :model="addForm" ref="addForm" label-width="100px" class="demo-addForm">
           <el-row>
             <el-col :span="20">
-              <el-form-item label="企业图标/头像">
-                <div @click="companyList('tx')" class="myImg">
-                  <el-image
-                    :src="addForm.user_info.avatar"
-                    :preview-src-list="[addForm.user_info.avatar]"
-                    fit="fill"
-                    style="width: 60px; height: 60px"
-                  >
-                    <div slot="error" class="image-slot">
-                      <i class="el-icon-picture-outline"></i>
-                    </div>
-                  </el-image>
-                  <div @click.stop="delImg('tx')" class="closeBtn">
-                    <el-button circle>×</el-button>
-                  </div>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="20">
-              <el-form-item label="企业营业执照">
-                <div @click="companyList('yyzz')" class="myImg">
-                  <el-image
-                    :src="addForm.user_info.business_license"
-                    :preview-src-list="[addForm.user_info.business_license]"
-                    fit="fill"
-                    style="width: 60px; height: 60px"
-                  >
-                    <div slot="error" class="image-slot">
-                      <i class="el-icon-picture-outline"></i>
-                    </div>
-                  </el-image>
-                  <div @click.stop="delImg('yyzz')" class="closeBtn">
-                    <el-button circle>×</el-button>
-                  </div>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="20">
-              <el-form-item label="企业名称">
-                <el-input size="small" v-model="addForm.user_info.nick_name"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="20">
-              <el-form-item label="店铺图">
-                <div @click="companyList('dpt')" class="myImg">
-                  <el-image
-                    :src="addForm.user_info.shop_img"
-                    :preview-src-list="[addForm.user_info.shop_img]"
-                    fit="fill"
-                    style="width: 60px; height: 60px"
-                  >
-                    <div slot="error" class="image-slot">
-                      <i class="el-icon-picture-outline"></i>
-                    </div>
-                  </el-image>
-                  <div @click.stop="delImg('dpt')" class="closeBtn">
-                    <el-button circle>×</el-button>
-                  </div>
-                </div>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="20">
-              <el-form-item label="店铺名称">
-                <el-input size="small" v-model="addForm.user_info.shop_name"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="20">
-              <el-form-item label="店铺地址">
-                <el-input size="small" v-model="addForm.user_info.detail_address"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="20">
-              <el-form-item label="店铺联系方式">
-                <el-input size="small" v-model="addForm.user_info.shop_phone"></el-input>
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <el-row>
-            <el-col :span="20">
-              <el-form-item label="企业类型">
-                <el-radio-group v-model="addForm.user_info.type">
-                  <el-radio :label="0">企业</el-radio>
-                  <el-radio :label="1">个体工商户</el-radio>
-                  <el-radio :label="2">小微</el-radio>
+              <el-form-item label="类型">
+                <el-radio-group v-model="addForm.add_sub">
+                  <el-radio :label="0">减少</el-radio>
+                  <el-radio :label="1">增加</el-radio>
                 </el-radio-group>
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="20">
+              <el-form-item label="积分数">
+                <el-input size="small" v-model="addForm.num"></el-input>
               </el-form-item>
             </el-col>
           </el-row>
@@ -362,18 +267,17 @@ export default {
   },
   data() {
     return {
-      loading:false,
+      loading: false,
       imgStatus: "",
       addDialogVisible: false,
       addForm: {
         id: "",
-        name: "",
-        sort: "",
-        type: "",
-        user_info: {}
+        add_sub: 1,
+        num: ""
       },
       activeName: "1",
       formInline: {
+        rad1: "0",
         search: "",
         select: ""
       },
@@ -382,7 +286,7 @@ export default {
       total: 51,
       dialogVisible: false,
       mingxiFrom: {
-        rad1: "1"
+        rad1: "0"
       },
       mingxiTableData: [],
       mingxiTotal: 0,
@@ -403,35 +307,26 @@ export default {
   methods: {
     async getData() {
       this.loading = true;
-      const res = await this.$api.users({
-        limit: this.yonghuguanliPageSize,
+      const res = await this.$api.user_list({
+        pagesize: this.yonghuguanliPageSize,
         page: this.yonghuguanliPage,
-        keyword: this.formInline.search
+        is_retail: this.formInline.rad1
       });
       console.log(res.data);
       this.total = res.data.total;
-      this.tableData = res.data.data;
+      this.tableData = res.data.list;
       this.tableData.forEach(ele => {
-        if (ele.user_info) {
-          ele.myType =
-            ele.user_info.type == 0
-              ? "企业"
-              : ele.user_info.type == 1
-              ? "个体工商户"
-              : "小微";
-          ele.myUser_infoStatus =
-            ele.user_info.status == 0
-              ? "审核中"
-              : ele.user_info.status == 1
-              ? "审核通过"
-              : "审核未通过";
-        }
+        ele.myType = ele.is_retail == 1 ? "超级会员" : "普通会员";
       });
       console.log(this.tableData);
       this.loading = false;
     },
     addHandleClose() {
       this.addDialogVisible = false;
+    },
+    changRad1(e) {
+      console.log(e);
+      this.getData();
     },
     // 删除图片
     delImg(val, i = 0) {
@@ -447,31 +342,23 @@ export default {
     },
     async AddOnSubmit() {
       console.log(this.addForm);
-      const res = await this.$api.updateUsers(
-        {
-          avatar: this.addForm.user_info.avatar,
-          business_license: this.addForm.user_info.business_license,
-          nick_name: this.addForm.user_info.nick_name,
-          shop_img: this.addForm.user_info.shop_img,
-          shop_name: this.addForm.user_info.shop_name,
-          detail_address: this.addForm.user_info.detail_address,
-          shop_phone: this.addForm.user_info.shop_phone,
-          type: this.addForm.user_info.type
-        },
-        this.id
-      );
-      console.log(res)
-      if (res) {
-          this.$message({
-            message: "修改成功",
-            type: "success"
-          });
-          this.getData()
-          this.addDialogVisible = false;
-        } else {
-          this.$message.error(res.msg);
-          this.getData();
-        }
+      const res = await this.$api.operation_userintegral({
+        user_id: this.id,
+        add_sub: this.addForm.add_sub,
+        num: this.addForm.num
+      });
+      console.log(res);
+      if (res.data.result == 1) {
+        this.$message({
+          message: res.msg,
+          type: "success"
+        });
+        this.getData();
+        this.addDialogVisible = false;
+      } else {
+        this.$message.error(res.msg);
+        this.getData();
+      }
     },
     // 上传图片
     companyList(val) {
@@ -531,22 +418,39 @@ export default {
       }
     },
     tabEdit(row) {
-      console.log(row);
       this.id = row.id;
-      row.is_show = row.status == "0" ? "隐藏" : "显示";
-      this.addForm = { ...row };
       this.addDialogVisible = true;
     },
+    seeJifen(row) {
+      this.mingxiUser_id = row.id;
+      this.getMingxiData();
+      this.dialogVisible = true;
+    },
     async getMingxiData() {
-      const res = await this.$api.usersIdMoneyRecords({
+      const res = await this.$api.integral_list({
         id: this.mingxiUser_id,
         page: this.zijinmingxiliebiaoPage,
-        limit: this.zijinmingxiliebiaoPageSize
+        limit: this.zijinmingxiliebiaoPageSize,
+        status: this.mingxiFrom.rad1
       });
       console.log(res.data);
-      this.mingxiTableData = res.data.data;
+      this.mingxiTableData = res.data.list;
       this.mingxiTableData.forEach(ele => {
-        ele.myPm = ele.is_in == "1" ? "获得" : "支出";
+        ele.myTypes =
+          ele.types == "1"
+            ? "注册"
+            : ele.types == "2"
+            ? "登录"
+            : ele.types == "3"
+            ? "消费"
+            : ele.types == "4"
+            ? "发布动态"
+            : ele.types == "5"
+            ? "战术被后台采集"
+            : ele.types == "6"
+            ? "推荐获得积分（征兵）"
+            : "手动发放";
+        ele.myAdd_sub = ele.add_sub == "1" ? "收入" : "支出";
       });
       this.mingxiTotal = res.data.total;
     },

@@ -50,22 +50,22 @@ export default {
   },
   methods: {
     async getData() {
-      const res = await this.$api.getScoreRule();
+      const res = await this.$api.agreementinfo();
       console.log(res);
-      this.content = res.data.content;
+      this.content = res.data.integral_rule;
       if (this.content) {
         this.editor.txt.html(this.content);
       }
     },
     async onSubmitForm() {
       this.content = document.getElementsByClassName("w-e-text")[0].innerHTML;
-      const res = await this.$api.scoreRule({
-        content:this.content
+      const res = await this.$api.integralrule_set({
+        content: this.content
       });
       console.log(res.data);
-      if (res.data.status == 0) {
+      if (res.data.result == 1) {
         this.$message({
-          message: res.data.message,
+          message: res.data.msg,
           type: "success"
         });
         this.getData();
@@ -86,6 +86,7 @@ export default {
     }
   },
   async mounted() {
+    var that = this;
     this.editor = new E("#editor");
     this.editor.config.menus = [
       "head",
@@ -108,28 +109,21 @@ export default {
       "redo"
     ];
     this.editor.config.uploadImgServer = "/upload-img";
-    // this.editor.config.uploadImgShowBase64 = true; // 使用 base64 保存图片
-    const res = await this.$api.uploadToken();
-    let myData = res.data;
-    let client = new window.OSS.Wrapper({
-      region: myData.region, //oss地址
-      accessKeyId: myData.accessKeyId, //ak
-      accessKeySecret: myData.accessKeySecret, //secret
-      stsToken: myData.stsToken,
-      bucket: myData.bucket //oss名字
-    });
-    this.editor.config.customUploadImg = async (resultFiles, insertImgFn) => {
-      var file_re = await this.readFileAsBuffer(resultFiles[0]);
-      client
-        .put("myImg", file_re)
-        .then(function(res) {
-          // 上传图片，返回结果，将图片插入到编辑器中
-          console.log(res);
-          insertImgFn(res.url);
-        })
-        .catch(function(err) {
-          console.log(err);
-        });
+    this.editor.config.uploadImgShowBase64 = true; // 使用 base64 保存图片
+    this.editor.config.customUploadImg = async function(
+      resultFiles,
+      insertImgFn
+    ) {
+      // resultFiles 是 input 中选中的文件列表
+      // insertImgFn 是获取图片 url 后，插入到编辑器的方法
+      console.log(resultFiles[0]);
+      that.imgFile = new FormData();
+      that.imgFile.append("pic", resultFiles[0]);
+      that.imgFile.append("token", sessionStorage.getItem("token"));
+      const res = await that.$api.upload_pic(that.imgFile);
+      console.log(res.data.pic_url)
+      insertImgFn(res.data.pic_url);
+      //   file_re = await that.readFileAsBuffer(resultFiles[0]);
     };
     this.editor.create();
     if (this.content) {

@@ -263,1196 +263,579 @@ export default {
             }
         })
     },
-    users(obj) {
-        return myGet({
-            url: urls.users,
-            params: {
-                ...obj
-            }
-        })
-    },
-    updateUsers(obj, id) {
-        return myPut({
-            url: `${urls.users}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    usersIdMoneyRecords(obj) {
-        return myGet({
-            url: `${urls.usersIdMoneyRecords}/${obj.id}/money-records`,
-            params: {
-                ...obj
-            }
-        })
-    },
-    categories(obj) {
-        return myGet({
-            url: urls.categories,
-            params: {
-                ...obj
-            }
-        })
-    },
-    addCategories(obj) {
+    tactics_list(obj) {
         return myPost({
-            url: urls.addCategories,
+            url: urls.tactics_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    updateCategories(obj, id) {
-        return myPut({
-            url: `${urls.updateCategories}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    area(obj) {
-        return myGet({
-            url: urls.area,
-            params: {
-                ...obj
-            }
-        })
-    },
-    items(obj) {
-        return myGet({
-            url: urls.items,
-            params: {
-                ...obj
-            }
-        })
-    },
-    scoreItems(obj) {
-        return myGet({
-            url: urls.scoreItems,
-            params: {
-                ...obj
-            }
-        })
-    },
-    addScoreItems(obj) {
+    add_tactics(obj) {
         return myPost({
-            url: urls.scoreItems,
+            url: urls.add_tactics,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    postage(obj) {
-        return myGet({
-            url: urls.postage,
-            params: {
-                ...obj
-            }
-        })
-    },
-    ordersExport(obj) {
+    store_list(obj) {
         return myPost({
-            url: urls.ordersExport,
+            url: urls.store_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    addPostage(obj) {
+    store_setflag(obj) {
         return myPost({
-            url: urls.postage,
+            url: urls.store_setflag,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    upDatePostage(obj, id) {
-        return myPut({
-            url: `${urls.postage}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    deletePostage(id) {
-        return myDelete({
-            url: `${urls.postage}/${id}`,
-        })
-    },
-    upDateScoreItems(obj, id) {
-        return myPut({
-            url: `${urls.scoreItems}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    deleteScoreItems(id) {
-        return myDelete({
-            url: `${urls.scoreItems}/${id}`,
-        })
-    },
-    addItems(obj) {
+    store_setstatus(obj) {
         return myPost({
-            url: urls.items,
+            url: urls.store_setstatus,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    seeItemsPP(obj,id) {
-        return myGet({
-            url: `${urls.items}/${id}/brands`,
-            params: {
-                ...obj
-            }
-        })
-    },
-    addItemPP(obj,id) {
+    storesettled_list(obj) {
         return myPost({
-            url: `${urls.items}/${id}/addbrands`,
+            url: urls.storesettled_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    delItemPP(obj,id) {
+    storesettled_setstatus(obj) {
         return myPost({
-            url: `${urls.items}/${id}/delbrands`,
+            url: urls.storesettled_setstatus,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    message(obj) {
-        return myGet({
-            url: urls.message,
-            params: {
-                ...obj
-            }
-        })
-    },
-    delMessage(id) {
+    applystore_info(obj) {
         return myPost({
-            url: `${urls.message}/${id}/delete`,
+            url: urls.applystore_info,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
         })
     },
-    addMessage(obj) {
+    store_superuser(obj) {
         return myPost({
-            url: `${urls.message}/add`,
+            url: urls.store_superuser,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    homeimages(obj) {
-        return myGet({
-            url: urls.homeimages,
-            params: {
-                ...obj
-            }
-        })
-    },
-    updateHomeimages(obj,id) {
+    store_engage(obj) {
         return myPost({
-            url: `${urls.homeimages}/${id}/update`,
+            url: urls.store_engage,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    addHomeimages(obj) {
-        return myPut({
-            url: `${urls.homeimages}/add`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    delHomeimages(id) {
-        return myDelete({
-            url: `${urls.homeimages}/${id}/delete`,
-        })
-    },
-    brands(obj) {
-        return myGet({
-            url: urls.brands,
-            params: {
-                ...obj
-            }
-        })
-    },
-    upBrandsImg(obj,id) {
+    user_list(obj) {
         return myPost({
-            url: `${urls.brands}/${id}/update`,
+            url: urls.user_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    item_oelist(obj) {
-        return myGet({
-            url: urls.item_oelist,
-            params: {
-                ...obj
-            }
-        })
-    },
-    upDateItems(obj, id) {
-        return myPut({
-            url: `${urls.items}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    deleteItems(id) {
-        return myDelete({
-            url: `${urls.items}/${id}`,
-        })
-    },
-    scoreItemSku(obj) {
-        return myGet({
-            url: urls.scoreItemSku,
-            params: {
-                ...obj
-            }
-        })
-    },
-    addScoreItemSku(obj) {
+    goodsclassify_list(obj) {
         return myPost({
-            url: urls.scoreItemSku,
+            url: urls.goodsclassify_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    deleteScoreItemSku(id) {
-        return myDelete({
-            url: `${urls.scoreItemSku}/${id}`,
-        })
-    },
-    upDateScoreItemSku(obj, id) {
-        return myPut({
-            url: `${urls.scoreItemSku}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    uploadToken() {
-        return myGet({
-            url: urls.uploadToken,
-        })
-    },
-    idCards(obj, id) {
-        return myPut({
-            url: `${urls.idCards}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    demandQuotes(obj) {
-        return myGet({
-            url: urls.demandQuotes,
-            params: {
-                ...obj
-            }
-        })
-    },
-    ordersId(obj, id) {
-        return myPut({
-            url: `${urls.ordersId}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    afterSaleStatus(id) {
-        return myGet({
-            url: `${urls.afterSaleStatus}/${id}`,
-        })
-    },
-    search_itemkeyslist(obj) {
-        return myGet({
-            url: urls.search_itemkeyslist,
-            params: {
-                ...obj
-            }
-        })
-    },
-    articles(obj) {
-        return myGet({
-            url: urls.articles,
-            params: {
-                ...obj
-            }
-        })
-    },
-    search_itemkeys(obj) {
+    setstatus_goodsclassify(obj) {
         return myPost({
-            url: urls.search_itemkeys,
+            url: urls.setstatus_goodsclassify,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    delSearch_itemkeys(id) {
-        return myDelete({
-            url: `${urls.search_itemkeys}/${id}`,
-        })
-    },
-    addArticles(obj) {
+    add_goodsclassify(obj) {
         return myPost({
-            url: urls.articles,
+            url: urls.add_goodsclassify,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    userexamineList(obj) {
-        return myGet({
-            url: urls.userexamineList,
-            params: {
-                ...obj
-            }
-        })
-    },
-    userexamine(obj, id) {
-        return myPut({
-            url: `${urls.userexamine}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    delUserexamine(id) {
-        return myGet({
-            url: `${urls.userexamine}/${id}/cancel`,
-        })
-    },
-    supplier(obj) {
-        return myGet({
-            url: urls.supplier,
-            params: {
-                ...obj
-            }
-        })
-    },
-    addSupplier(obj) {
+    edit_goodsclassify(obj) {
         return myPost({
-            url: urls.supplier,
+            url: urls.edit_goodsclassify,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    upDateSupplier(obj, id) {
-        return myPut({
-            url: `${urls.supplier}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    deleteSupplier(id) {
-        return myDelete({
-            url: `${urls.supplier}/${id}`,
-        })
-    },
-    supplierIdOelist(obj, id) {
-        return myGet({
-            url: `${urls.supplierIdOelist}/${id}/oelist`,
-            params: {
-                ...obj
-            }
-        })
-    },
-    addSupplierIdOelist(obj, id) {
+    del_goodsclassify(obj) {
         return myPost({
-            url: `${urls.supplierIdOelist}/${id}/addoe`,
+            url: urls.del_goodsclassify,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    upDateSupplierIdOelist(obj, id) {
+    swiper_list(obj) {
         return myPost({
-            url: `${urls.supplierIdOelist}/${id}/updateoe`,
+            url: urls.swiper_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    deleteSupplierIdOelist(obj, id) {
-        return myGet({
-            url: `${urls.supplierIdOelist}/${id}/deloe`,
-            params: {
-                ...obj
-            }
-        })
-    },
-    statistics(obj) {
-        return myGet({
-            url: urls.statistics,
-            params: {
-                ...obj
-            }
-        })
-    },
-    upDateArticles(obj, id) {
-        return myPut({
-            url: `${urls.articles}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    deleteArticles(id) {
-        return myDelete({
-            url: `${urls.articles}/${id}`,
-        })
-    },
-    scoreRule(obj) {
-        return myPut({
-            url: `${urls.scoreRule}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    manage_limit() {
-        return myGet({
-            url: urls.manage_limit,
-        })
-    },
-    manage_list(obj) {
-        return myGet({
-            url: urls.manage_list,
-            params: {
-                ...obj
-            }
-        })
-    },
-    manage_add(obj) {
+    add_swiper(obj) {
         return myPost({
-            url: urls.manage_add,
+            url: urls.add_swiper,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    itemsSearch_oe(obj) {
+    swiper_setstatus(obj) {
         return myPost({
-            url: urls.itemsSearch_oe,
+            url: urls.swiper_setstatus,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    getScoreRule() {
-        return myGet({
-            url: urls.scoreRule,
-        })
-    },
-    billRule(obj) {
-        return myPut({
-            url: `${urls.billRule}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    getBillRule() {
-        return myGet({
-            url: urls.billRule,
-        })
-    },
-    articlesTypes() {
-        return myGet({
-            url: urls.articlesTypes,
-        })
-    },
-    orders(obj) {
-        return myGet({
-            url: urls.orders,
-            params: {
-                ...obj
-            }
-        })
-    },
-    orderBillXiangqin(id) {
-        return myGet({
-            url: `${urls.orders}/${id}/bill`,
-        })
-    },
-    ordersFahuo(obj, id) {
-        return myPut({
-            url: `${urls.orders}/${id}/delivery`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    manage_limitview(obj) {
+    edit_swiper(obj) {
         return myPost({
-            url: urls.manage_limitview,
+            url: urls.edit_swiper,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    manage_del(id) {
+    swiper_delete(obj) {
         return myPost({
-            url: `${urls.manage_del}/${id}`,
+            url: urls.swiper_delete,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
         })
     },
-    manage_viewId(id) {
-        return myGet({
-            url: `${urls.manage_view}/${id}`,
-        })
-    },
-    manage_update(obj,id) {
+    logopic(obj) {
         return myPost({
-            url: `${urls.manage_update}/${id}`,
-            data:{
-                ...obj
-            }
-        })
-    },
-    chatRooms(obj) {
-        return myGet({
-            url: urls.chatRooms,
-            params: {
-                ...obj
-            }
-        })
-    },
-    chatHistory(obj) {
-        return myGet({
-            url: urls.chatHistory,
-            params: {
-                ...obj
-            }
-        })
-    },
-    afterSale(obj) {
-        return myGet({
-            url: urls.afterSale,
-            params: {
-                ...obj
-            }
-        })
-    },
-    upDateAfterSale(obj, id) {
-        return myPut({
-            url: `${urls.afterSale}/${id}`,
+            url: urls.logopic,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    banners(obj) {
-        return myGet({
-            url: urls.banners,
-            params: {
-                ...obj
-            }
-        })
-    },
-    addBanners(obj) {
+    edit_logopic(obj) {
         return myPost({
-            url: urls.banners,
+            url: urls.edit_logopic,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    upDateBanners(obj, id) {
-        return myPut({
-            url: `${urls.banners}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    deleteBanners(id) {
-        return myDelete({
-            url: `${urls.banners}/${id}`,
-        })
-    },
-    bannersPositions() {
-        return myGet({
-            url: urls.bannersPositions,
-        })
-    },
-    bannersJumpTypes() {
-        return myGet({
-            url: urls.bannersJumpTypes,
-        })
-    },
-    globalConfigs(obj) {
-        return myGet({
-            url: urls.globalConfigs,
-            data: {
-                ...obj
-            }
-        })
-    },
-    upDateGlobalConfigs(obj, id) {
-        return myPut({
-            url: `${urls.globalConfigs}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    areas(obj) {
-        return myGet({
-            url: urls.areas,
-            params: {
-                ...obj
-            }
-        })
-    },
-    feedbacks(obj) {
-        return myGet({
-            url: urls.feedbacks,
-            params: {
-                ...obj
-            }
-        })
-    },
-    upDatefeedbacks(obj, id) {
-        return myPut({
-            url: `${urls.feedbacks}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    withdraw(obj) {
-        return myGet({
-            url: urls.withdraw,
-            params: {
-                ...obj
-            }
-        })
-    },
-    upDateWithdraw(obj, id) {
-        return myPut({
-            url: `${urls.withdraw}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    fixedPosition(obj) {
-        return myGet({
-            url: urls.fixedPosition,
-            params: {
-                ...obj
-            }
-        })
-    },
-    positions() {
-        return myGet({
-            url: urls.positions,
-        })
-    },
-    addFixedPosition(obj) {
+    edit_tactics(obj) {
         return myPost({
-            url: urls.fixedPosition,
+            url: urls.edit_tactics,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    upDateFixedPosition(obj, id) {
-        return myPut({
-            url: `${urls.fixedPosition}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    deleteFixedPosition(id) {
-        return myDelete({
-            url: `${urls.fixedPosition}/${id}`,
-        })
-    },
-    fixedPositionItem(obj) {
-        return myGet({
-            url: urls.fixedPositionItem,
-            params: {
-                ...obj
-            }
-        })
-    },
-    addFixedPositionItem(obj) {
+    del_tactics(obj) {
         return myPost({
-            url: urls.fixedPositionItem,
+            url: urls.del_tactics,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    upDateFixedPositionItem(obj, id) {
-        return myPut({
-            url: `${urls.fixedPositionItem}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    deleteFixedPositionItem(id) {
-        return myDelete({
-            url: `${urls.fixedPositionItem}/${id}`,
-        })
-    },
-    itemAll() {
-        return myGet({
-            url: urls.itemAll,
-        })
-    },
-    turntableItem(obj) {
-        return myGet({
-            url: urls.turntableItem,
-            params: {
-                ...obj
-            }
-        })
-    },
-    addTurntableItem(obj) {
+    equip_classify(obj) {
         return myPost({
-            url: urls.turntableItem,
+            url: urls.equip_classify,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    upDateTurntableItem(obj, id) {
-        return myPut({
-            url: `${urls.turntableItem}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    deleteTurntableItem(id) {
-        return myDelete({
-            url: `${urls.turntableItem}/${id}`,
-        })
-    },
-    awards(obj) {
-        return myGet({
-            url: urls.awards,
-            params: {
-                ...obj
-            }
-        })
-    },
-    upDateAwards(obj, id) {
-        return myPut({
-            url: `${urls.awards}/${id}`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    goodsOrder(obj) {
-        return myGet({
-            url: urls.goodsOrder,
-            params: {
-                ...obj
-            }
-        })
-    },
-    goodsOrderFahuo(obj, id) {
-        return myPut({
-            url: `${urls.goodsOrder}/${id}/delivery`,
-            data: {
-                ...obj
-            }
-        })
-    },
-    // 
-
-
-    productList(obj) {
-        return myGet({
-            url: urls.productList,
-            params: {
-                ...obj
-            }
-        })
-    },
-    async productUpload(image) {
-        var configs = {
-            headers: {
-                "Content-Type": "multipart/form-data;charse=UTF-8",
-                'Authorization': `Bearer ${sessionStorage.getItem("token")}`,
-            },
-        };
-        const res = await axios
-            .post(`${urls.baseUrl}/admin/product/upload`, image, configs)
-        return res.data
-    },
-    loginInfo() {
-        return myGet({
-            url: urls.loginInfo,
-        })
-    },
-    categorySave(obj) {
+    equip_list(obj) {
         return myPost({
-            url: urls.categorySave,
+            url: urls.equip_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    categoryIndex(obj) {
-        return myGet({
-            url: urls.categoryIndex,
-            params: {
-                ...obj
-            }
-        })
-    },
-    productSave(obj) {
+    del_equip(obj) {
         return myPost({
-            url: urls.productSave,
+            url: urls.del_equip,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    categoryDel(id) {
+    setstatus_equip(obj) {
         return myPost({
-            url: urls.categoryDel,
+            url: urls.setstatus_equip,
             data: {
-                id
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    productAttrs(id) {
-        return myGet({
-            url: urls.productAttrs,
-            params: {
-                id
-            }
-        })
-    },
-    productDescription(id) {
-        return myGet({
-            url: urls.productDescription,
-            params: {
-                id
-            }
-        })
-    },
-    combinationSave(obj) {
+    circle_list(obj) {
         return myPost({
-            url: urls.combinationSave,
+            url: urls.circle_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    combinationList(obj) {
-        return myGet({
-            url: urls.combinationList,
-            params: {
-                ...obj
-            }
-        })
-    },
-    combinationAttrs(id) {
-        return myGet({
-            url: urls.combinationAttrs,
-            params: {
-                id
-            }
-        })
-    },
-    combinationDescription(id) {
-        return myGet({
-            url: urls.combinationDescription,
-            params: {
-                id
-            }
-        })
-    },
-    combinationShow(obj) {
+    del_circle(obj) {
         return myPost({
-            url: urls.combinationShow,
+            url: urls.del_circle,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    productShow(obj) {
+    circle_setgather(obj) {
         return myPost({
-            url: urls.productShow,
+            url: urls.circle_setgather,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    activitySave(obj) {
+    integral_list(obj) {
         return myPost({
-            url: urls.activitySave,
+            url: urls.integral_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    activityIndex(obj) {
-        return myGet({
-            url: urls.activityIndex,
-            params: {
-                ...obj
-            }
-        })
-    },
-    activityDel(obj) {
+    operation_userintegral(obj) {
         return myPost({
-            url: urls.activityDel,
+            url: urls.operation_userintegral,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    orderIndex(obj) {
-        return myGet({
-            url: urls.orderIndex,
-            params: {
-                ...obj
-            }
-        })
-    },
-    activityAdd_product(obj) {
+    commission_list(obj) {
         return myPost({
-            url: urls.activityAdd_product,
+            url: urls.commission_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    activityList_product(obj) {
-        return myGet({
-            url: urls.activityList_product,
-            params: {
-                ...obj
-            }
-        })
-    },
-    orderDelivery(obj) {
+    userrecommend_list(obj) {
         return myPost({
-            url: urls.orderDelivery,
+            url: urls.userrecommend_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    activityList_gift() {
-        return myGet({
-            url: urls.activityList_gift,
-        })
-    },
-    activityAdd_gift(obj) {
+    recommenduserlower_list(obj) {
         return myPost({
-            url: urls.activityAdd_gift,
+            url: urls.recommenduserlower_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    activityDel_gift(obj) {
+    recommendorders_list(obj) {
         return myPost({
-            url: urls.activityDel_gift,
+            url: urls.recommendorders_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    activityDel_cate_gift(obj) {
+    recommendsale_list(obj) {
         return myPost({
-            url: urls.activityDel_cate_gift,
+            url: urls.recommendsale_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    activityAdd_cate_gift(obj) {
+    proportion_list(obj) {
         return myPost({
-            url: urls.activityAdd_cate_gift,
+            url: urls.proportion_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    activityDel_product(obj) {
+    add_proportion(obj) {
         return myPost({
-            url: urls.activityDel_product,
+            url: urls.add_proportion,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    uniqidIndex(obj) {
-        return myGet({
-            url: urls.uniqidIndex,
-            params: {
-                ...obj
-            }
-        })
-    },
-    uniqidAdd(obj) {
+    del_proportion(obj) {
         return myPost({
-            url: urls.uniqidAdd,
+            url: urls.del_proportion,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    uniqidDel(obj) {
+    realnamelist(obj) {
         return myPost({
-            url: urls.uniqidDel,
+            url: urls.realnamelist,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    combinationAdd_product_cate(obj) {
+    examine_realnamesetstatus(obj) {
         return myPost({
-            url: urls.combinationAdd_product_cate,
+            url: urls.examine_realnamesetstatus,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    combinationList_product_cate(obj) {
-        return myGet({
-            url: urls.combinationList_product_cate,
-            params: {
-                ...obj
-            }
-        })
-    },
-    combinationDel_product_cate(obj) {
+    theme_list(obj) {
         return myPost({
-            url: urls.combinationDel_product_cate,
+            url: urls.theme_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    userIndex(obj) {
-        return myGet({
-            url: urls.userIndex,
-            params: {
-                ...obj
-            }
-        })
-    },
-    webconfigSave(obj) {
+    setstatus_theme(obj) {
         return myPost({
-            url: urls.webconfigSave,
+            url: urls.setstatus_theme,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    webconfigIndex() {
-        return myGet({
-            url: urls.webconfigIndex,
-        })
-    },
-    sell_order_list(obj) {
-        return myGet({
-            url: urls.sell_order_list,
-            params: {
-                ...obj
-            }
-        })
-    },
-    confirm_sell_order(obj) {
+    add_theme(obj) {
         return myPost({
-            url: urls.confirm_sell_order,
+            url: urls.add_theme,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    save_shipping_templates(obj) {
+    edit_theme(obj) {
         return myPost({
-            url: urls.save_shipping_templates,
+            url: urls.edit_theme,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    list_shipping_templates(obj) {
-        return myGet({
-            url: urls.list_shipping_templates,
-            params: {
-                ...obj
-            }
-        })
-    },
-    detail_shipping_templates(obj) {
-        return myGet({
-            url: urls.detail_shipping_templates,
-            params: {
-                ...obj
-            }
-        })
-    },
-    del_shipping_templates(obj) {
+    del_theme(obj) {
         return myPost({
-            url: urls.del_shipping_templates,
+            url: urls.del_theme,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    dashboard() {
-        return myGet({
-            url: urls.dashboard,
-        })
-    },
-    user_bill_log(obj) {
-        return myGet({
-            url: urls.user_bill_log,
-            params: {
-                ...obj
-            }
-        })
-    },
-    template_message_list(obj) {
-        return myGet({
-            url: urls.template_message_list,
-            params: {
-                ...obj
-            }
-        })
-    },
-    template_message_save(obj) {
+    withdrawal_list(obj) {
         return myPost({
-            url: urls.template_message_save,
+            url: urls.withdrawal_list,
             data: {
-                ...obj
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
-    user_extract(obj) {
-        return myGet({
-            url: urls.user_extract,
-            params: {
-                ...obj
+    withdrawal_setstatus(obj) {
+        return myPost({
+            url: urls.withdrawal_setstatus,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
+        })
+    },
+    system_view(obj) {
+        return myPost({
+            url: urls.system_view,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
+        })
+    },
+    system_set(obj) {
+        return myPost({
+            url: urls.system_set,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
+        })
+    },
+    integralrule_set(obj) {
+        return myPost({
+            url: urls.integralrule_set,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
+        })
+    },
+    agreementinfo(obj) {
+        return myPost({
+            url: urls.agreementinfo,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
+        })
+    },
+    registeragreement_set(obj) {
+        return myPost({
+            url: urls.registeragreement_set,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
+        })
+    },
+    about_info(obj) {
+        return myPost({
+            url: urls.about_info,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
+        })
+    },
+    edit_abouts(obj) {
+        return myPost({
+            url: urls.edit_abouts,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
+        })
+    },
+    limits(obj) {
+        return myPost({
+            url: urls.limits,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
+        })
+    },
+    adminuser_list(obj) {
+        return myPost({
+            url: urls.adminuser_list,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
+        })
+    },
+    add_adminuser(obj) {
+        return myPost({
+            url: urls.add_adminuser,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
+        })
+    },
+    update_adminuser(obj) {
+        return myPost({
+            url: urls.update_adminuser,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
+        })
+    },
+    adminuser_del(obj) {
+        return myPost({
+            url: urls.adminuser_del,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
+            }
+        })
+    },
+    adminuser_setstatusval(obj) {
+        return myPost({
+            url: urls.adminuser_setstatusval,
+            data: {
+                ...obj,
+                token:sessionStorage.getItem("token"),
             }
         })
     },
@@ -1464,140 +847,7 @@ export default {
             },
         };
         const res = await axios
-            .post(`${urls.baseUrl}/admin/upload_pic`, image, configs)
-        return res.data
-    },
-    banner_add(obj) {
-        return myPost({
-            url: urls.banner_add,
-            data: {
-                ...obj
-            }
-        })
-    },
-    banner_list(obj) {
-        return myGet({
-            url: urls.banner_list,
-            params: {
-                ...obj
-            }
-        })
-    },
-    banner_edit(obj) {
-        return myPost({
-            url: urls.banner_edit,
-            data: {
-                ...obj
-            }
-        })
-    },
-    banner_del(obj) {
-        return myPost({
-            url: urls.banner_del,
-            data: {
-                ...obj
-            }
-        })
-    },
-    open_pic_add(obj) {
-        return myPost({
-            url: urls.open_pic_add,
-            data: {
-                ...obj
-            }
-        })
-    },
-    open_pic() {
-        return myGet({
-            url: urls.open_pic,
-        })
-    },
-    open_pic_edit(obj) {
-        return myPost({
-            url: urls.open_pic_edit,
-            data: {
-                ...obj
-            }
-        })
-    },
-    data_center(obj) {
-        return myGet({
-            url: urls.data_center,
-            params: {
-                ...obj
-            }
-        })
-    },
-    other_shipping_templates(obj) {
-        return myGet({
-            url: urls.other_shipping_templates,
-            params: {
-                ...obj
-            }
-        })
-    },
-    orderDel(obj) {
-        return myPost({
-            url: urls.orderDel,
-            data: {
-                ...obj
-            }
-        })
-    },
-    updat_user_info(obj) {
-        return myPost({
-            url: urls.updat_user_info,
-            data: {
-                ...obj
-            }
-        })
-    },
-    article_list(obj) {
-        return myGet({
-            url: urls.article_list,
-            params: {
-                ...obj
-            }
-        })
-    },
-    article_add(obj) {
-        return myPost({
-            url: urls.article_add,
-            data: {
-                ...obj
-            }
-        })
-    },
-    article_edit(obj) {
-        return myPost({
-            url: urls.article_edit,
-            data: {
-                ...obj
-            }
-        })
-    },
-    article_del(obj) {
-        return myPost({
-            url: urls.article_del,
-            data: {
-                ...obj
-            }
-        })
-    },
-    user_pintuan_log(obj) {
-        return myGet({
-            url: urls.user_pintuan_log,
-            params: {
-                ...obj
-            }
-        })
-    },
-    user_pintuan_count(obj) {
-        return myGet({
-            url: urls.user_pintuan_count,
-            params: {
-                ...obj
-            }
-        })
+            .post(`${urls.baseUrl}/upload_pic`, image, configs)
+        return res
     },
 }

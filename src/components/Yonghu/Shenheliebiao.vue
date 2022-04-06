@@ -11,7 +11,7 @@
       </div>
     </div>
     <div class="nav2">
-      <div class="myForm">
+      <!-- <div class="myForm">
         <el-form :inline="true" :model="formInline" class="demo-form-inline">
           <el-form-item label="用户搜索：">
             <div class="search">
@@ -28,7 +28,7 @@
             <el-button size="small" @click="onReact">重置</el-button>
           </el-form-item>
         </el-form>
-      </div>
+      </div> -->
       <div class="tit1">
         <!-- <el-button
           @click="toAddShop"
@@ -79,11 +79,14 @@
             </template>
           </vxe-table-column>
           <vxe-table-column field="id" title="ID"></vxe-table-column>
-          <vxe-table-column field="avatar" title="企业图标/头像">
+          <vxe-table-column field="realname" title="姓名"></vxe-table-column>
+          <vxe-table-column field="idcard" title="身份证号"></vxe-table-column>
+          <vxe-table-column field="avatar" title="身份证正面">
             <template slot-scope="scope">
               <el-image
                 v-if="scope.row"
-                :src="scope.row.avatar"
+                :src="scope.row.idcard_positive"
+                :preview-src-list="[scope.row.idcard_positive]"
                 fit="fill"
                 style="width: 40px; height: 40px"
               >
@@ -93,12 +96,12 @@
               </el-image>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="avatar" title="企业营业执照">
+          <vxe-table-column field="avatar" title="身份证反面">
             <template slot-scope="scope">
               <el-image
                 v-if="scope.row"
-                :src="scope.row.business_license"
-                :preview-src-list="[scope.row.business_license]"
+                :src="scope.row.idcard_back"
+                :preview-src-list="[scope.row.idcard_back]"
                 fit="fill"
                 style="width: 40px; height: 40px"
               >
@@ -108,17 +111,14 @@
               </el-image>
             </template>
           </vxe-table-column>
-          <vxe-table-column field="nick_name" title="企业名称"></vxe-table-column>
-          <vxe-table-column field="myType" title="类型"></vxe-table-column>
-          <vxe-table-column field="myUser_infoStatus" title="审核状态"></vxe-table-column>
           <!-- <vxe-table-column field="user_info.shop_name" title="店铺名称"></vxe-table-column> -->
           <!-- <vxe-table-column field="user_info.shop_phone" title="店铺联系方式"></vxe-table-column> -->
-          <vxe-table-column title="操作状态" width="150">
+          <vxe-table-column title="操作状态" width="120">
             <template slot-scope="scope">
               <div class="flex">
                 <el-button size="small" @click="tongguo(scope.row)" type="text">通过</el-button>
                 <el-button size="small" @click="jujue(scope.row)" type="text">拒绝</el-button>
-                <el-button size="small" @click="quxiao(scope.row)" type="text">取消</el-button>
+                <!-- <el-button size="small" @click="quxiao(scope.row)" type="text">取消</el-button> -->
               </div>
             </template>
           </vxe-table-column>
@@ -267,26 +267,25 @@ export default {
   methods: {
     async getData() {
       this.loading = true;
-      const res = await this.$api.userexamineList({
+      const res = await this.$api.realnamelist({
         limit: this.yonghushenhePageSize,
-        page: this.yonghushenhePage,
-        keyword: this.formInline.search
+        page: this.yonghushenhePage
       });
       console.log(res.data);
       this.total = res.data.total;
-      this.tableData = res.data.data;
-      this.tableData.forEach(ele => {
-        if (ele) {
-          ele.myType =
-            ele.type == 0 ? "企业" : ele.type == 1 ? "个体工商户" : "小微";
-          ele.myUser_infoStatus =
-            ele.status == 0
-              ? "审核中"
-              : ele.status == 1
-              ? "审核通过"
-              : "审核未通过";
-        }
-      });
+      this.tableData = res.data.list;
+      // this.tableData.forEach(ele => {
+      //   if (ele) {
+      //     ele.myType =
+      //       ele.type == 0 ? "企业" : ele.type == 1 ? "个体工商户" : "小微";
+      //     ele.myUser_infoStatus =
+      //       ele.status == 0
+      //         ? "审核中"
+      //         : ele.status == 1
+      //         ? "审核通过"
+      //         : "审核未通过";
+      //   }
+      // });
       console.log(this.tableData);
       this.loading = false;
     },
@@ -304,38 +303,34 @@ export default {
       this.mingxiTotal = res.data.total;
     },
     async tongguo(row) {
-      const res = await this.$api.userexamine(
-        {
-          status: 1
-        },
-        row.id
-      );
-      if (res) {
+      const res = await this.$api.examine_realnamesetstatus({
+        id: row.id,
+        status: 1
+      });
+      if (res.data.result == 1) {
         this.$message({
-          message: "已通过审核",
+          message: res.data.msg,
           type: "success"
         });
         this.getData();
       } else {
-        this.$message.error(res.message);
+        this.$message.error(res.data.msg);
         this.getData();
       }
     },
     async jujue(row) {
-      const res = await this.$api.userexamine(
-        {
-          status: 2
-        },
-        row.id
-      );
-      if (res) {
+      const res = await this.$api.examine_realnamesetstatus({
+        id: row.id,
+        status: 2
+      });
+      if (res.data.result == 1) {
         this.$message({
-          message: "已拒绝审核",
+          message: res.data.msg,
           type: "success"
         });
         this.getData();
       } else {
-        this.$message.error(res.message);
+        this.$message.error(res.data.msg);
         this.getData();
       }
     },

@@ -1,5 +1,5 @@
 <template>
-  <div class="index">
+  <div class="index" v-if="false">
     <div class="top">
       <div class="box">
         <div class="icon1">
@@ -61,8 +61,13 @@
           </el-form-item>
           <el-form-item>
             <el-button size="small" type="primary" @click="onSubmit">查询</el-button>
+            <el-button size="small" @click="daochu">导出</el-button>
           </el-form-item>
         </el-form>
+      </div>
+      <div class="tj">
+        <div class="txt">销售总额：{{sum_price}}</div>
+        <div class="txt">销售总数：{{sum_count}}</div>
       </div>
       <div class="myTable">
         <vxe-table :data="tableData">
@@ -97,7 +102,12 @@
           <vxe-table-column field="id" title="商品ID"></vxe-table-column>
           <vxe-table-column field="role" title="商品主图">
             <template slot-scope="scope">
-              <el-image :src="scope.row.preview_image" :preview-src-list="[scope.row.preview_image]" fit="fill" style="width: 40px; height: 40px">
+              <el-image
+                :src="scope.row.preview_image"
+                :preview-src-list="[scope.row.preview_image]"
+                fit="fill"
+                style="width: 40px; height: 40px"
+              >
                 <div slot="error" class="image-slot">
                   <i class="el-icon-picture-outline"></i>
                 </div>
@@ -167,15 +177,15 @@ export default {
       },
       options: [],
       tableData: [],
-      total: 0
+      total: 0,
+      sum_count:0,
+      sum_price:0,
     };
   },
   created() {
-    // this.getData();
-    // this.getData2();
-    this.getNowTime();
-    this.getData3();
-    this.getsupplier()
+    // this.getNowTime();
+    // this.getData3();
+    // this.getsupplier();
   },
   methods: {
     async getData() {
@@ -356,12 +366,12 @@ export default {
       option3.series[0].data = week_activity_userZhiArr;
       option3 && myChart3.setOption(option3);
     },
-    async getsupplier(){
+    async getsupplier() {
       const res = await this.$api.supplier({
-        page:1,
-        limit:10000
-      })
-      console.log(res)
+        page: 1,
+        limit: 10000
+      });
+      console.log(res);
       this.options = res.data.data;
     },
     async getData3() {
@@ -370,13 +380,15 @@ export default {
         page: this.shouyePage,
         start_day: this.formInline.time[0],
         end_day: this.formInline.time[1],
-        supplier_id:this.formInline.category_id
+        supplier_id: this.formInline.category_id
       });
       this.wait_send = res.data.item_count;
       this.wait_check = res.data.orders_count;
       this.wait_refund = res.data.orders_sumprice;
       this.tableData = res.data.list;
       this.total = res.data.total;
+      this.sum_price = res.data.sum_price;
+      this.sum_count = res.data.sum_count;
     },
     async getData2() {
       // const res2 = await this.$api.categories();
@@ -425,7 +437,15 @@ export default {
     onSubmit() {
       console.log(this.formInline);
       this.$store.commit("shouyePage", 1);
-      this.getData3()
+      this.getData3();
+    },
+    async daochu() {
+      const res = await this.$api.statisticsexport({
+        start_day: this.formInline.time[0],
+        end_day: this.formInline.time[1],
+        supplier_id: this.formInline.category_id
+      });
+      window.open(res.data.excel_url)
     },
     // 分页
     handleSizeChange(val) {
@@ -560,6 +580,14 @@ export default {
   }
   .tit1 {
     margin-top: 10px;
+  }
+  .tj{
+    display: flex;
+    align-items: center;
+    margin: 10px 0;
+    .txt{
+      margin-right: 16px;
+    }
   }
   .myTable {
     margin-top: 10px;
