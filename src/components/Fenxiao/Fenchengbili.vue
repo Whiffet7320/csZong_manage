@@ -36,12 +36,12 @@
       </div>
       <div class="myTable">
         <vxe-table :data="tableData">
-          <vxe-table-column field="sale_one" title="一个市场经销商比例(%)"></vxe-table-column>
-          <vxe-table-column field="sale_two" title="两个市场经销商比例(%)"></vxe-table-column>
-          <vxe-table-column field="sale_three" title="三个市场经销商比例(%)"></vxe-table-column>
-          <vxe-table-column field="retail_one" title="一个市场分销比例(%)"></vxe-table-column>
-          <vxe-table-column field="retail_two" title="两个市场分销比例(%)"></vxe-table-column>
-          <vxe-table-column field="retail_three" title="三个市场分销比例(%)"></vxe-table-column>
+          <vxe-table-column field="sale_one" title="经销商比例(%)"></vxe-table-column>
+          <!-- <vxe-table-column field="sale_two" title="两个市场经销商比例(%)"></vxe-table-column> -->
+          <!-- <vxe-table-column field="sale_three" title="三个市场经销商比例(%)"></vxe-table-column> -->
+          <vxe-table-column field="retail_one" title="分销比例(%)"></vxe-table-column>
+          <!-- <vxe-table-column field="retail_two" title="两个市场分销比例(%)"></vxe-table-column> -->
+          <!-- <vxe-table-column field="retail_three" title="三个市场分销比例(%)"></vxe-table-column> -->
           <vxe-table-column field="mediate" title="居间比例(%)"></vxe-table-column>
           <vxe-table-column field="begin_time" title="开始时间"></vxe-table-column>
           <vxe-table-column field="end_time" title="结束时间"></vxe-table-column>

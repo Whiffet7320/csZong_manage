@@ -144,8 +144,8 @@ export default {
           type: "success"
         });
         setTimeout(() => {
-          // this.$router.push({ path: "/Shangping/Shangpingfenlei" });
-          // this.$router.go(0);
+          this.$router.push({ path: "/Shangping/Shangpingfenlei" });
+          this.$router.go(0);
         }, 500);
       }
     }

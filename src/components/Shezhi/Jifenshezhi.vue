@@ -48,13 +48,13 @@
               </el-form-item>
             </el-col>
           </el-row>
-          <el-row>
+          <!-- <el-row>
             <el-col :span="12">
               <el-form-item label="锁定推荐人最低消费金额(元)：" prop="recommendconsume_price">
                 <el-input size="small" v-model="ruleForm.recommendconsume_price"></el-input>
               </el-form-item>
             </el-col>
-          </el-row>
+          </el-row> -->
           <el-row>
             <el-col :span="12">
               <el-form-item label="支付超级会员的金额：" prop="superuser_price">
