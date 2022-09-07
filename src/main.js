@@ -38,11 +38,15 @@ router.beforeEach((to, from, next) => {
   var flag = false;
   menu.forEach(ele=>{
     ele.sub_menu.forEach(ele2=>{
+      console.log(ele2.url)
       if(to.fullPath.indexOf(ele2.url) != -1){
         flag = true;
       }
     })
   })
+  if(to.fullPath == '/' || to.fullPath == '/Shouye'){
+    flag = true;
+  }
   console.log(flag)
   if(!flag && to.fullPath != '/NotFound/NotFound404'){
     next({name:'NotFound404'})

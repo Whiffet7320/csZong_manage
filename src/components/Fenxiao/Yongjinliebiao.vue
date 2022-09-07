@@ -67,6 +67,7 @@
           <vxe-table-column field="from_usercode" title="用户id"></vxe-table-column>
           <vxe-table-column field="from_orderno" title="来源订单号"></vxe-table-column>
           <vxe-table-column field="myHierarchy_types" title="类型"></vxe-table-column>
+          <vxe-table-column field="commission_amount" title="佣金金额"></vxe-table-column>
           <!-- <vxe-table-column field="is_show" title="状态(是否显示)">
             <template slot-scope="scope">
               <el-switch @change="changeKG(scope.row)" v-model="scope.row.isShow"></el-switch>

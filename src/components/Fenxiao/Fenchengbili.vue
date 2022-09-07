@@ -32,7 +32,7 @@
       </div>-->
       <div class="tit1">
         <el-button @click="AddLunbotu" size="small" type="primary" icon="el-icon-plus">添加分成比例</el-button>
-        <div style="margin-top:10px;color:#606266">A推B,B推C,A推D,A推E,如果A是分销商，则B是销售商，B需要成为超级会员才会获得C消费的佣金。若B未成为超级会员C消费了，A和B都无法得到佣金。若B、D、E都成为超级会员A可得居间分成，A成功推3个超级会员以上就可以获得居间分成</div>
+        <!-- <div style="margin-top:10px;color:#606266">A推B,B推C,A推D,A推E,如果A是分销商，则B是销售商，B需要成为超级会员才会获得C消费的佣金。若B未成为超级会员C消费了，A和B都无法得到佣金。若B、D、E都成为超级会员A可得居间分成，A成功推3个超级会员以上就可以获得居间分成</div> -->
       </div>
       <div class="myTable">
         <vxe-table :data="tableData">
@@ -83,12 +83,12 @@
           <el-form :model="ruleForm" ref="ruleForm" label-width="160px" class="demo-ruleForm">
             <el-row>
               <el-col :span="18">
-                <el-form-item label="一个市场经销商比例(%)：">
+                <el-form-item label="经销商比例(%)：">
                   <el-input size="small" v-model="ruleForm.sale_one"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row>
+            <!-- <el-row>
               <el-col :span="18">
                 <el-form-item label="两个市场经销商比例(%)：">
                   <el-input size="small" v-model="ruleForm.sale_two"></el-input>
@@ -101,15 +101,15 @@
                   <el-input size="small" v-model="ruleForm.sale_three"></el-input>
                 </el-form-item>
               </el-col>
-            </el-row>
+            </el-row> -->
             <el-row>
               <el-col :span="18">
-                <el-form-item label="一个市场分销比例(%)：">
+                <el-form-item label="分销比例(%)：">
                   <el-input size="small" v-model="ruleForm.retail_one"></el-input>
                 </el-form-item>
               </el-col>
             </el-row>
-            <el-row>
+            <!-- <el-row>
               <el-col :span="18">
                 <el-form-item label="两个市场分销比例(%)：">
                   <el-input size="small" v-model="ruleForm.retail_two"></el-input>
@@ -122,7 +122,7 @@
                   <el-input size="small" v-model="ruleForm.retail_three"></el-input>
                 </el-form-item>
               </el-col>
-            </el-row>
+            </el-row> -->
             <el-row>
               <el-col :span="18">
                 <el-form-item label="居间比例(%)：">

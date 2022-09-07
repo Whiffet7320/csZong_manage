@@ -267,6 +267,7 @@ export default {
       this.id = row.id;
       this.addForm.id = row.id;
       this.addForm.name = row.title;
+      this.addForm.pic = row.pic;
       this.addForm.ratio = row.proportion_ratio;
       this.addForm.is_show = row.is_status;
       console.log(this.addForm,row)
